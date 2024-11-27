@@ -1,0 +1,17 @@
+{% extends 'admin/base_site.html' %}
+
+{% block content %}
+<div class="app-pacientes module">
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form}}
+    {{formCarga}}
+    <fieldset class="module aligned">
+      <div>
+        <label for="id_archivo_csv">Archivo CSV:</label> {{ form.archivo_csv }}
+      </div>
+    </fieldset>
+    <input type="submit" name="apply" value="Cargar" />
+  </form>
+</div>
+{% endblock %}

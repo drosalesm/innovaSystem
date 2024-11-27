@@ -1,0 +1,523 @@
+{% extends "home/index.html" %}
+{%load static%}
+
+{% block nav%}
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+
+{% block body %}
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+
+
+
+<section id="services" class="services">
+    <div class="container">
+        <div class=" text-center mt-8 ">
+            <h2 style="margin-bottom: 1%;"><strong>Eevaluacion Oftalmologica</strong></h2>
+        </div>
+        <div class="row ">
+            <div class="col-lg-12 mx-auto">
+                <div class="card mt-4 mx-auto p-4 bg-light">
+                    <div class="card-body bg-light">
+                        <div class="container">
+                            <form id="contact-form" role="form">
+                                <div class="controls">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="form_name">Paciente</label>
+                                                <input id="form_name" type="text" name="name" class="form-control"
+                                                    value="{{paciente}}" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="form_lastname">Orden</label>
+                                                <input id="form_name" type="text" name="name" class="form-control"
+                                                    value="{{name_orden}}" disabled>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="form_email">Codigo de orden</label>
+                                                <input id="form_email" type="text" name="email" class="form-control"
+                                                    value="{{cod_orden}}" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top: 2%;">
+                                        <div class="col-md-1">
+                                            <div class="form-group">
+                                                <label>Fecha:</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <input disabled type="text" class="form-control" id="fechaHoy" value="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="row " style="margin-top: 4%;">
+                                        <h5 style="text-align: center;"><strong>ITEMS A EVALUAR</strong></h5>
+                                        <hr />
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Agudeza visual Lejana OD:</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <input type="number" class="form-control" value="" placeholder="/20">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Agudeza visual Lejana OI:</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <input type="number" class="form-control" value="" placeholder="/20">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row" style="margin-top:2%">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Agudeza visual Lejana Ambos Ojos:</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <input type="number" class="form-control" value="" placeholder="/20">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Agudeza visual Cercana OD:</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <input type="number" class="form-control" value="" placeholder="/20">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row" style="margin-top:2%">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Agudeza visual Cercana OI:</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <input type="number" class="form-control" value="" placeholder="/20">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Agudeza visual Cercana Ambos Ojos:</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <input type="number" class="form-control" value="" placeholder="/20">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row" style="margin-top:2%">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Vision Nocturna:</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <input type="number" class="form-control" value="" placeholder="/20">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Campo Visual Vertical Izquierda:</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <input type="number" class="form-control" value="" placeholder="/20">
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row" style="margin-top:2%">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Campo Visual Vertical Derecha:</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <input type="number" class="form-control" value="" placeholder="/20">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Campo Visual Horizontal Izquierda:</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <input type="number" class="form-control" value="" placeholder="/20">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top:2%">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Campo Visual Horizontal Derecha:</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <input type="number" class="form-control" value="" placeholder="/20">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Campo Visual Binocular Horizontal:</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <input type="number" class="form-control" value="" placeholder="/20">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row" style="margin-top:2%">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Vision en Profundidad Lejana:</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <input type="number" class="form-control" value="" placeholder="/20">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Vision en Profundidad Cercana:</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <input type="number" class="form-control" value="" placeholder="/20">
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row" style="margin-top:2%">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Discriminacion de Colores:</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <input type="number" class="form-control" value="" placeholder="/20">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Sensibilidad al Contraste:</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <input type="number" class="form-control" value="" placeholder="/20">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row" style="margin-top:2%">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Recuperacion de Encandelamiento:</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <input type="number" class="form-control" value="" placeholder="/20">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Phorias Horizontal Lejana:</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <input type="number" class="form-control" value="" placeholder="/20">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top:2%">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Phorias Vertical Lejana:</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <input type="number" class="form-control" value="" placeholder="/20">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Phorias Horizontal Cercana:</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <input type="number" class="form-control" value="" placeholder="/20">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top:2%">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Phorias Vertical Cercana:</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <input type="number" class="form-control" value="" placeholder="/20">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row" style="margin-top: 2%;">
+                                        <div class="col-md-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="flexCheckChecked">
+                                                <label class="form-check-label" for="flexCheckChecked">
+                                                    Usa Lentes Correctores
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="flexCheckChecked">
+                                                <label class="form-check-label" for="flexCheckChecked">
+                                                    Cirujia Refra. diferente afaquia
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="flexCheckChecked">
+                                                <label class="form-check-label" for="flexCheckChecked">
+                                                    Vision Monocular
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="flexCheckChecked">
+                                                <label class="form-check-label" for="flexCheckChecked">
+                                                    Estocomas Relativos
+                                                </label>
+                                            </div>
+                                        </div>                                        
+                                    </div>
+
+                                    <div class="row" style="margin-top: 2%;">
+                                        <div class="col-md-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="flexCheckChecked">
+                                                <label class="form-check-label" for="flexCheckChecked">
+                                                    Estocomas absolutos
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="flexCheckChecked">
+                                                <label class="form-check-label" for="flexCheckChecked">
+                                                    Estocomas en el campo central
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="flexCheckChecked">
+                                                <label class="form-check-label" for="flexCheckChecked">
+                                                    Ptosis
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="flexCheckChecked">
+                                                <label class="form-check-label" for="flexCheckChecked">
+                                                    Lagoftalmias
+                                                </label>
+                                            </div>
+                                        </div>                                        
+                                    </div>
+
+                                    <div class="row" style="margin-top: 2%;">
+                                        <div class="col-md-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="flexCheckChecked">
+                                                <label class="form-check-label" for="flexCheckChecked">
+                                                    Diplopia
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="flexCheckChecked">
+                                                <label class="form-check-label" for="flexCheckChecked">
+                                                    Nistagmus que afecta cap. visual
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="flexCheckChecked">
+                                                <label class="form-check-label" for="flexCheckChecked">
+                                                    Nigtamus que origine fatiga
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="flexCheckChecked">
+                                                <label class="form-check-label" for="flexCheckChecked">
+                                                    Defectos de la vision binocular
+                                                </label>
+                                            </div>
+                                        </div>                                        
+                                    </div>
+
+                                    <div class="row" style="margin-top: 2%;">
+                                        <div class="col-md-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="flexCheckChecked">
+                                                <label class="form-check-label" for="flexCheckChecked">
+                                                    Estrabismos
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="flexCheckChecked">
+                                                <label class="form-check-label" for="flexCheckChecked">
+                                                    Enfermedades Progresiva
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="flexCheckChecked">
+                                                <label class="form-check-label" for="flexCheckChecked">
+                                                    Afaquias
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="flexCheckChecked">
+                                                <label class="form-check-label" for="flexCheckChecked">
+                                                    Pseudofaquias
+                                                </label>
+                                            </div>
+                                        </div>                                        
+                                    </div>
+
+                                    <div class="row" style="margin-top: 2%;">
+                                        <div class="col-md-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="flexCheckChecked">
+                                                <label class="form-check-label" for="flexCheckChecked">
+                                                    Motilidad Palpebral
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="flexCheckChecked">
+                                                <label class="form-check-label" for="flexCheckChecked">
+                                                    Motilidad del globo ocular
+                                                </label>
+                                            </div>
+                                        </div>                                       
+                                    </div>
+
+                                    <div class="row">
+                                        <div style="margin-top: 4%;" class="container">
+                                            <button type="button" class="btn btn-primary"><a style="color: white;"
+                                                    href="">Guardar Evaluacion</a></button>
+                                        </div>
+                                    </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- /.8 -->
+
+                </div>
+                <!-- /.row-->
+
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
+</section><!-- End Services Section -->
+
+<script type="application/javascript">
+    $(function () {
+        var m = new Date();
+        var dateString = m.getUTCFullYear() + "/" + (m.getUTCMonth() + 1) + "/" + m.getUTCDate();
+        document.getElementById("fechaHoy").value = dateString;
+    });
+
+</script>
+
+
+{% endblock %}

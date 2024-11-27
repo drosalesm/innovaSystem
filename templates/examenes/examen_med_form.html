@@ -1,0 +1,1093 @@
+{% extends "home/index.html" %}
+{%load static%}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% block nav%}
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block body %}
+
+
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<link href="{% static '/css/style_gen.css'%}" rel="stylesheet">
+<input hidden type="text" name="" id="type_View" value="{{view_type}}">
+
+
+
+<div class="card card-body bg-light ver col-lg-12 mx-auto">
+
+
+
+    <div class="row" style="margin-top: 2%;">
+        <img class='rounded mx-auto d-block' style="width: 150px;" src="{% static '/img/logoLetras.png'%}">
+    </div>
+
+
+    <form id="contact-form" role="form" method="POST" enctype='multipart/form-data'>
+
+        <div style="display:none">
+        <div>{% render_field form.dir_pac class="form-control hide" value=direccion placeholder=form.dir_pac.label%}</div>
+        <div>{% render_field form.identif_pac class="form-control hide" value=identificacion placeholder=form.identif_pac.label%}</div>
+        <div>{% render_field form.cod_orden class="form-control hide" value=orden placeholder=form.cod_orden.label%}</div>        
+        </div>
+
+
+        {% csrf_token %}
+        <div class="controls">    
+            <div class="row" style="margin-bottom: 2%; margin-top: 1%;">
+                <div class="col-md-12">
+                    {% if view_type == 'create' %}
+                    <h4><strong>Evaluacion Medica:</strong></h4>
+                    {% else %}
+                    <h4><strong>Resultados: Examen Medico</h4>
+                    {% endif %}
+                </div>
+            </div>
+
+
+            
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label><strong>Paciente</strong></label>
+                        <div>{% render_field form.paciente class="form-control" value=paciente placeholder=form.cod_ord.label%}</div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label><strong>Orden</strong></label>
+                        <div>{% render_field form.nombre_orden class="form-control" value=name_orden placeholder=form.cod_ord.label%}</div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div style="margin-top: 1%;" id="div_nombre_sucursal" class="form-group"> 
+                        <label for="id_nombre_sucursal" class="requiredField"><strong>Fecha:</strong></label> 
+                        <input type="date" name="fecha" maxlength="500" class="textinput textInput form-control" 
+                        required id="id_fecha" value="{{form.fecha.value | date:'c'}}">
+                    </div>  
+                </div>       
+                
+                
+                <div class="col-md-1">
+                    <div class="form-group">
+                        <label><strong>Altura</strong></label>
+                        <div>{% render_field form.altura class="form-control" placeholder=form.altura.label%}</div>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="form-group">
+                        <label><strong>Peso</strong></label>
+                        <div>{% render_field form.peso class="form-control" placeholder=form.peso.label%}</div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label><strong>Tipo de sangre</strong></label>
+                        <div>{% render_field form.t_sangre class="form-control" placeholder=form.t_sangre.label%}</div>
+                    </div>
+                </div>     
+                <div class="col-md-1">
+                    <div class="form-group">
+                        <label><strong>P. Art.</strong></label>
+                        <div>{% render_field form.p_alterial class="form-control" placeholder=form.p_alterial.label%}</div>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="form-group">
+                        <label><strong>Temp.</strong></label>
+                        <div>{% render_field form.temperatura class="form-control" placeholder=form.temperatura.label%}</div>
+                    </div>
+                </div>    
+
+            </div>  
+
+            <div class="row" style="margin-top: 1%;">
+                <div class="col-md-2">
+                    <div style="margin-top: 1%;" id="div_nombre_sucursal" class="form-group"> 
+                        <label for="id_nombre_sucursal" class="requiredField"><strong>Foto:</strong></label> 
+                        {% if pac.foto %}
+                        <td><img style="width:200px; height:180px;" src="{{pac.foto.url }}" alt="" border=3 height=100 width=300></img></th>
+                            {%else %}
+                            <td><img style="width:200px; height:180px;" src="" alt="" border=3 height=100 width=300></img></th>
+                            {% endif %}
+                    </div>  
+                </div>             
+            
+            </div>
+
+
+<div class="row" style="margin-top: 1%;">
+    {% if view_type == 'create' %}
+    <div class="col-md-2">
+        <div class="form-group">
+            <label><strong>Doctor</strong></label>
+            <select id="select_doct" class="form-control">        
+            <option text='-----'>-----</option>
+            {% for d in doctor.all %}
+            <option text={{d}}>{{d}} </option>
+
+            {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="form-group">
+            <label><strong>Atendido por:</strong></label>
+            <div>{% render_field form.doctor class="form-control" placeholder=form.doctor.label%}</div>
+        </div>
+    </div>
+    {% endif %}
+    <div class="col-md-4">
+        <div id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"><strong>Documento</strong></label>
+            <div>{% render_field form.documento class="form-control" placeholder=form.documento.label%}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-1">
+        <div class="form-group">
+            <label><strong>IMC</strong></label>
+            <div>{% render_field form.imc class="form-control" placeholder=form.imc.label%}</div>
+        </div>
+    </div>
+    <div class="col-md-1">
+        <div class="form-group">
+            <label><strong>F.R.</strong></label>
+            <div>{% render_field form.f_r class="form-control" placeholder=form.f_r.label%}</div>
+        </div>
+    </div>   
+    <div class="col-md-1">
+        <div class="form-group">
+            <label><strong>P.A</strong></label>
+            <div>{% render_field form.p_a class="form-control" placeholder=form.p_a.label%}</div>
+        </div>
+    </div>
+    <div class="col-md-1">
+        <div class="form-group">
+            <label><strong>F.C</strong></label>
+            <div>{% render_field form.f_c class="form-control" placeholder=form.f_c.label%}</div>
+        </div>
+    </div>   
+
+</div>
+
+
+            <div class="row" style="margin-top:2%">
+               
+                {% if view_type == 'create' %}
+                <div class="col-md-2 form-check">
+                    <div>{% render_field form.i_card class="form-check-input" type="checkbox" %}</div>
+                    <label class="form-check-label" for="flexCheckDefault">Insuficiencia Cardiaca</label>
+                </div>
+                <div class="col-md-2 form-check">
+                    <div>{% render_field form.t_rit class="form-check-input" type="checkbox" %}</div>
+                    <label class="form-check-label" for="flexCheckDefault">Transtornos del Ritmo</label>
+                </div>                                                
+                <div class="col-md-2 form-check">
+                    <div>{% render_field form.m_desf class="form-check-input" type="checkbox" %}</div>
+                    <label class="form-check-label" for="flexCheckDefault">Marcapasos y/o desfibrilador</label>
+                </div>                                                 
+                <div class="col-md-2 form-check">
+                    <div>{% render_field form.p_val class="form-check-input" type="checkbox" %}</div>
+                    <label class="form-check-label" for="flexCheckDefault">Prot. Valvulares</label>
+                </div>            
+
+                {% else %}                                                                                                
+                {% if form.i_card.value == 'on'  %}
+                <div class="col-md-2 form-check">
+                    <input class="form-check-input" type="checkbox" id="i_card" value="" checked>
+                    <label class="form-check-label" for="flexCheckDefault">Insuficiencia Cardiaca</label>
+                </div>
+                {% else %}                       
+                <div class="col-md-2 form-check">
+                    <div>{% render_field form.i_card class="form-check-input" type="checkbox"%}</div>
+                    <label class="form-check-label" for="flexCheckDefault">Insuficiencia Cardiaca</label>
+                </div>                                            
+                {% endif %}                                                                                                                                            
+                {% if form.t_rit.value == 'on'  %}
+                <div class="col-md-2 form-check">
+                    <input class="form-check-input" type="checkbox" id="tran_rit" value="" checked>
+                    <label class="form-check-label" for="flexCheckDefault">Transtornos del Ritmo</label>
+                </div>
+                {% else %} 
+                <div class="col-md-2 form-check">
+                    <div>{% render_field form.t_rit class="form-check-input" type="checkbox" %}</div>
+                    <label class="form-check-label" for="flexCheckDefault">Transtornos del Ritmo</label>
+                </div>                           
+                {% endif %}
+                {% if form.m_desf.value == 'on'  %}
+                <div class="col-md-2 form-check">
+                    <input class="form-check-input" type="checkbox" id="marc_des" value="" checked>
+                    <label class="form-check-label" for="flexCheckDefault">Marcapasos y/o desfibrilador</label>
+                </div>
+                {% else %}                                                         
+                <div class="col-md-2 form-check">
+                    <div>{% render_field form.m_desf class="form-check-input" type="checkbox" %}</div>
+                    <label class="form-check-label" for="flexCheckDefault">Marcapasos y/o desfibrilador</label>
+                </div>     
+                {% endif %} 
+                {% if form.p_val.value == 'on'  %}
+                <div class="col-md-2 form-check">
+                    <input class="form-check-input" type="checkbox" id="prot_val" value="" checked>
+                    <label class="form-check-label" for="flexCheckDefault">Prot. Valvulares</label>
+                </div>
+                {% else %}
+                <div class="col-md-2 form-check">
+                    <div>{% render_field form.p_val class="form-check-input" type="checkbox" %}</div>
+                    <label class="form-check-label" for="flexCheckDefault">Prot. Valvulares</label>
+                </div>            
+                {% endif %} 
+                {% endif %} 
+                <div class="row" style="margin-top:1%">
+                    {% if view_type == 'create' %}
+                    <div class="col-md-2 form-check">
+                        <div>{% render_field form.hi_art class="form-check-input" type="checkbox" %}</div>
+                        <label class="form-check-label" for="flexCheckDefault">Hipertencion arterial</label>
+                    </div>                                                   
+                    <div class="col-md-2 form-check">
+                        <div>{% render_field form.a_gra_va class="form-check-input" type="checkbox" %}</div>
+                        <label class="form-check-label" for="flexCheckDefault">Aneurismas de grandes vasos</label>
+                    </div>                                                   
+
+                    <div class="col-md-2 form-check">
+                        <div>{% render_field form.a_per class="form-check-input" type="checkbox" %}</div>
+                        <label class="form-check-label" for="flexCheckDefault">Artropatias perifericas</label>
+                    </div>                                                   
+                    <div class="col-md-2 form-check">
+                        <div>{% render_field form.disnea class="form-check-input" type="checkbox" %}</div>
+                        <label class="form-check-label" for="flexCheckDefault">Disnea</label>
+                    </div>    
+                    <div class="col-md-2 form-check">
+                        <div>{% render_field form.t_sue class="form-check-input" type="checkbox" %}</div>
+                        <label class="form-check-label" for="flexCheckDefault">Trastorno del Sueño</label>
+                    </div>                                                   
+                    <div class="col-md-2 form-check">
+                        <div>{% render_field form.o_aff class="form-check-input" type="checkbox" %}</div>
+                        <label class="form-check-label" for="flexCheckDefault">Otras affeciones</label>
+                    </div>                                                
+                    {% else %}
+                    {% if form.hi_art.value == 'on'  %}
+                    <div class="col-md-2 form-check">
+                        <input class="form-check-input" type="checkbox" id="i_card" value="" checked>
+                        <label class="form-check-label" for="flexCheckDefault">Hipertencion arterial</label>
+                    </div>
+                    {% else %}                       
+                    <div class="col-md-2 form-check">
+                        <div>{% render_field form.hi_art class="form-check-input" type="checkbox" %}</div>
+                        <label class="form-check-label" for="flexCheckDefault">Hipertencion arterial</label>
+                    </div>                                           
+                    {% endif %}                                                                                                                                            
+                    {% if form.a_gra_va.value == 'on'  %}
+                    <div class="col-md-2 form-check">
+                        <input class="form-check-input" type="checkbox" id="tran_rit" value="" checked>
+                        <label class="form-check-label" for="flexCheckDefault">Aneurismas de grandes vasos</label>
+                    </div>
+                    {% else %} 
+                    <div class="col-md-2 form-check">
+                        <div>{% render_field form.a_gra_va class="form-check-input" type="checkbox" %}</div>
+                        <label class="form-check-label" for="flexCheckDefault">Aneurismas de grandes vasos</label>
+                    </div>                              
+                    {% endif %}
+                    {% if form.a_per.value == 'on'  %}
+                    <div class="col-md-2 form-check">
+                        <input class="form-check-input" type="checkbox" id="marc_des" value="" checked>
+                        <label class="form-check-label" for="flexCheckDefault">Artropatias perifericas</label>
+                    </div>
+                    {% else %}                                                         
+                    <div class="col-md-2 form-check">
+                        <div>{% render_field form.a_per class="form-check-input" type="checkbox" %}</div>
+                        <label class="form-check-label" for="flexCheckDefault">Artropatias perifericas</label>
+                    </div>     
+                    {% endif %} 
+
+                    {% if form.disnea.value == 'on'  %}
+                    <div class="col-md-2 form-check">
+                        <input class="form-check-input" type="checkbox" id="marc_des" value="" checked>
+                        <label class="form-check-label" for="flexCheckDefault">Disnea</label>
+                    </div>
+                    {% else %}                                                         
+                    <div class="col-md-2 form-check">
+                        <div>{% render_field form.disnea class="form-check-input" type="checkbox" %}</div>
+                        <label class="form-check-label" for="flexCheckDefault">Disnea</label>
+                    </div>      
+                    {% endif %} 
+                    {% if form.t_sue.value == 'on'  %}
+                    <div class="col-md-2 form-check">
+                        <input class="form-check-input" type="checkbox" id="prot_val" value="" checked>
+                        <label class="form-check-label" for="flexCheckDefault">Trastorno del Sueño</label>
+                    </div>
+                    {% else %}
+                    <div class="col-md-2 form-check">
+                        <div>{% render_field form.t_sue class="form-check-input" type="checkbox" %}</div>
+                        <label class="form-check-label" for="flexCheckDefault">Trastorno del Sueño</label>
+                    </div>              
+                    {% endif %} 
+                    {% if form.o_aff.value == 'on'  %}
+                    <div class="col-md-2 form-check">
+                        <input class="form-check-input" type="checkbox" id="prot_val" value="" checked>
+                        <label class="form-check-label" for="flexCheckDefault">Otras affeciones</label>
+                    </div>
+                    {% else %}
+                    <div class="col-md-2 form-check">
+                        <div>{% render_field form.o_aff class="form-check-input" type="checkbox" %}</div>
+                        <label class="form-check-label" for="flexCheckDefault">Otras affeciones</label>
+                    </div>              
+                    {% endif %} 
+                    {% endif %}                
+                    <div class="row" style="margin-top:1%">
+                        {% if view_type == 'create' %}
+                        <div class="col-md-2 form-check">
+                            <div>{% render_field form.d_melitus class="form-check-input" type="checkbox" %}</div>
+                            <label class="form-check-label" for="flexCheckDefault">Diabetis mellitus</label>
+                        </div>                                                   
+                        <div class="col-md-2 form-check">
+                            <div>{% render_field form.c_hip class="form-check-input" type="checkbox" %}</div>
+                            <label class="form-check-label" for="flexCheckDefault">Cuadros de hipoglucemia</label>
+                        </div>                                                   
+
+                        <div class="col-md-2 form-check">
+                            <div>{% render_field form.e_tir class="form-check-input" type="checkbox" %}</div>
+                            <label class="form-check-label" for="flexCheckDefault">Enfermededades Tiroideas</label>
+                        </div>                                                   
+                        <div class="col-md-2 form-check">
+                            <div>{% render_field form.e_adre class="form-check-input" type="checkbox" %}</div>
+                            <label class="form-check-label" for="flexCheckDefault">Enfermedades adrenales</label>
+                        </div>    
+                        <div class="col-md-2 form-check">
+                            <div>{% render_field form.a_alcohol class="form-check-input" type="checkbox" %}</div>
+                            <label class="form-check-label" for="flexCheckDefault">Abusos de Alcohol</label>
+                        </div>                                                   
+                        <div class="col-md-2 form-check">
+                            <div>{% render_field form.d_alcohol class="form-check-input" type="checkbox" %}</div>
+                            <label class="form-check-label" for="flexCheckDefault">Dependencia de Alcohol</label>
+                        </div>                                                
+                        {% else %}
+                        
+                        {% if form.d_melitus.value == 'on'  %}
+                        <div class="col-md-2 form-check">
+                            <input class="form-check-input" type="checkbox" id="i_card" value="" checked>
+                            <label class="form-check-label" for="flexCheckDefault">Diabetis mellitus</label>
+                        </div>
+                        {% else %}                       
+                        <div class="col-md-2 form-check">
+                            <div>{% render_field form.d_melitus class="form-check-input" type="checkbox" %}</div>
+                            <label class="form-check-label" for="flexCheckDefault">Diabetis mellitus</label>
+                        </div>                                             
+                        {% endif %}                                                                                                                                            
+                        {% if form.c_hip.value == 'on'  %}
+                        <div class="col-md-2 form-check">
+                            <input class="form-check-input" type="checkbox" id="tran_rit" value="" checked>
+                            <label class="form-check-label" for="flexCheckDefault">Cuadros de hipoglucemia</label>
+                        </div>
+                        {% else %} 
+                        <div class="col-md-2 form-check">
+                            <div>{% render_field form.c_hip class="form-check-input" type="checkbox" %}</div>
+                            <label class="form-check-label" for="flexCheckDefault">Cuadros de hipoglucemia</label>
+                        </div>                               
+                        {% endif %}
+                        {% if form.e_tir.value == 'on'  %}
+                        <div class="col-md-2 form-check">
+                            <input class="form-check-input" type="checkbox" id="marc_des" value="" checked>
+                            <label class="form-check-label" for="flexCheckDefault">Enfermededades Tiroideas</label>
+                        </div>
+                        {% else %}                                                         
+                        <div class="col-md-2 form-check">
+                            <div>{% render_field form.e_tir class="form-check-input" type="checkbox" %}</div>
+                            <label class="form-check-label" for="flexCheckDefault">Enfermededades Tiroideas</label>
+                        </div>     
+                        {% endif %} 
+
+                        {% if form.e_adre.value == 'on'  %}
+                        <div class="col-md-2 form-check">
+                            <input class="form-check-input" type="checkbox" id="marc_des" value="" checked>
+                            <label class="form-check-label" for="flexCheckDefault">Enfermedades adrenales</label>
+                        </div>
+                        {% else %}                                                         
+                        <div class="col-md-2 form-check">
+                            <div>{% render_field form.e_adre class="form-check-input" type="checkbox" %}</div>
+                            <label class="form-check-label" for="flexCheckDefault">Enfermedades adrenales</label>
+                        </div>       
+                        {% endif %} 
+                        {% if form.a_alcohol.value == 'on'  %}
+                        <div class="col-md-2 form-check">
+                            <input class="form-check-input" type="checkbox" id="prot_val" value="" checked>
+                            <label class="form-check-label" for="flexCheckDefault">Abusos de Alcohol</label>
+                        </div>
+                        {% else %}
+                        <div class="col-md-2 form-check">
+                            <div>{% render_field form.a_alcohol class="form-check-input" type="checkbox" %}</div>
+                            <label class="form-check-label" for="flexCheckDefault">Abusos de Alcohol</label>
+                        </div>             
+                        {% endif %} 
+                        {% if form.d_alcohol.value == 'on'  %}
+                        <div class="col-md-2 form-check">
+                            <input class="form-check-input" type="checkbox" id="prot_val" value="" checked>
+                            <label class="form-check-label" for="flexCheckDefault">Dependencia de Alcohol</label>
+                        </div>
+                        {% else %}
+                        <div class="col-md-2 form-check">
+                            <div>{% render_field form.d_alcohol class="form-check-input" type="checkbox" %}</div>
+                            <label class="form-check-label" for="flexCheckDefault">Dependencia de Alcohol</label>
+                        </div>                
+                        {% endif %} 
+                        {% endif %}                                    
+                    </div>
+                    <div class="row" style="margin-top:1%">
+                        {% if view_type == 'create' %}
+                        <div class="col-md-2 form-check">
+                            <div>{% render_field form.c_hdalc class="form-check-input" type="checkbox" %}</div>
+                            <label class="form-check-label" for="flexCheckDefault">Consu. hab Drogas y Medicament.</label>
+                        </div>                                                   
+                        <div class="col-md-2 form-check">
+                            <div>{% render_field form.e_par class="form-check-input" type="checkbox" %}</div>
+                            <label class="form-check-label" for="flexCheckDefault">Enfermedades Paratinoideas</label>
+                        </div>                                                   
+
+                        <div class="col-md-2 form-check">
+                            <div>{% render_field form.t_hep class="form-check-input" type="checkbox" %}</div>
+                            <label class="form-check-label" for="flexCheckDefault">Tratamiento quimioterapico</label>
+                        </div>                                                   
+                        <div class="col-md-2 form-check">
+                            <div>{% render_field form.p_vera class="form-check-input" type="checkbox" %}</div>
+                            <label class="form-check-label" for="flexCheckDefault">Policitemia Vera</label>
+                        </div>    
+                        <div class="col-md-2 form-check">
+                            <div>{% render_field form.a_leu_tromp class="form-check-input" type="checkbox" %}</div>
+                            <label class="form-check-label" for="flexCheckDefault">Anemias, Leucopenias y trombopenias</label>
+                        </div>                                                   
+                        <div class="col-md-2 form-check">
+                            <div>{% render_field form.t_org class="form-check-input" type="checkbox" %}</div>
+                            <label class="form-check-label" for="flexCheckDefault">Transtornos oncohematologicos</label>
+                        </div>                                                
+                        {% else %}
+                        
+                        {% if form.c_hdalc.value == 'on'  %}
+                        <div class="col-md-2 form-check">
+                            <input class="form-check-input" type="checkbox" id="i_card" value="" checked>
+                            <label class="form-check-label" for="flexCheckDefault">Consu. hab Drogas y Medicament.</label>
+                        </div>
+                        {% else %}                       
+                        <div class="col-md-2 form-check">
+                            <div>{% render_field form.c_hdalc class="form-check-input" type="checkbox" %}</div>
+                            <label class="form-check-label" for="flexCheckDefault">Consu. hab Drogas y Medicament.</label>
+                        </div>                                             
+                        {% endif %}           
+
+                        {% if form.e_par.value == 'on'  %}
+                        <div class="col-md-2 form-check">
+                            <input class="form-check-input" type="checkbox" id="tran_rit" value="" checked>
+                            <label class="form-check-label" for="flexCheckDefault">Enfermedades Paratinoideas</label>
+                        </div>
+                        {% else %} 
+                        <div class="col-md-2 form-check">
+                            <div>{% render_field form.e_par class="form-check-input" type="checkbox" %}</div>
+                            <label class="form-check-label" for="flexCheckDefault">Enfermedades Paratinoideas</label>
+                        </div>                               
+                        {% endif %}
+                        {% if form.t_hep.value == 'on'  %}
+                        <div class="col-md-2 form-check">
+                            <input class="form-check-input" type="checkbox" id="prot_val" value="" checked>
+                            <label class="form-check-label" for="flexCheckDefault">Tratamiento quimioterapico</label>
+                        </div>
+                        {% else %}
+                        <div class="col-md-2 form-check">
+                            <div>{% render_field form.t_hep class="form-check-input" type="checkbox" %}</div>
+                            <label class="form-check-label" for="flexCheckDefault">Tratamiento quimioterapico</label>
+                        </div>             
+                        {% endif %}                                             
+                        {% if form.p_vera.value == 'on'  %}
+                        <div class="col-md-2 form-check">
+                            <input class="form-check-input" type="checkbox" id="marc_des" value="" checked>
+                            <label class="form-check-label" for="flexCheckDefault">Policitemia Vera</label>
+                        </div>
+                        {% else %}                                                         
+                        <div class="col-md-2 form-check">
+                            <div>{% render_field form.p_vera class="form-check-input" type="checkbox" %}</div>
+                            <label class="form-check-label" for="flexCheckDefault">Policitemia Vera</label>
+                        </div>       
+                        {% endif %} 
+
+                        {% if form.a_leu_tromp.value == 'on'  %}
+                        <div class="col-md-2 form-check">
+                            <input class="form-check-input" type="checkbox" id="marc_des" value="" checked>
+                            <label class="form-check-label" for="flexCheckDefault">Anemias, Leucopenias y trombopenias</label>
+                        </div>
+                        {% else %}                                                         
+                        <div class="col-md-2 form-check">
+                            <div>{% render_field form.a_leu_tromp class="form-check-input" type="checkbox" %}</div>
+                            <label class="form-check-label" for="flexCheckDefault">Anemias, Leucopenias y trombopenias</label>
+                        </div>        
+                        {% endif %}                                             
+                        {% if form.t_org.value == 'on'  %}
+                        <div class="col-md-2 form-check">
+                            <input class="form-check-input" type="checkbox" id="prot_val" value="" checked>
+                            <label class="form-check-label" for="flexCheckDefault">Transtornos oncohematologicos</label>
+                        </div>
+                        {% else %}
+                        <div class="col-md-2 form-check">
+                            <div>{% render_field form.t_org class="form-check-input" type="checkbox" %}</div>
+                            <label class="form-check-label" for="flexCheckDefault">Transtornos oncohematologicos</label>
+                        </div>                
+                        {% endif %} 
+                        {% endif %}
+                        <div class="row" style="margin-top:1%">
+                            {% if view_type == 'create' %}
+                            <div class="col-md-2 form-check">
+                                <div>{% render_field form.neurop class="form-check-input" type="checkbox" %}</div>
+                                <label class="form-check-label" for="flexCheckDefault">Neuropatias</label>
+                            </div>                                                   
+                            <div class="col-md-2 form-check">
+                                <div>{% render_field form.tra_org class="form-check-input" type="checkbox" %}</div>
+                                <label class="form-check-label" for="flexCheckDefault">Trasplantes de organos</label>
+                            </div>                                                   
+
+                            <div class="col-md-2 form-check">
+                                <div>{% render_field form.o_enfer class="form-check-input" type="checkbox" %}</div>
+                                <label class="form-check-label" for="flexCheckDefault">Otras Enfermedades</label>
+                            </div>                                                   
+                            <div class="col-md-2 form-check">
+                                <div>{% render_field form.sis_n_vas class="form-check-input" type="checkbox" %}</div>
+                                <label class="form-check-label" for="flexCheckDefault">Sistema Nervioso Vascular</label>
+                            </div>    
+                            <div class="col-md-2 form-check">
+                                <div>{% render_field form.e_enc_conv class="form-check-input" type="checkbox" %}</div>
+                                <label class="form-check-label" for="flexCheckDefault">Enf. encefalicas, medulares y del Sis.Nervioso periferico</label>
+                            </div>                                                   
+                            <div class="col-md-2 form-check">
+                                <div>{% render_field form.e_cris_conv class="form-check-input" type="checkbox" %}</div>
+                                <label class="form-check-label" for="flexCheckDefault">Epilepcias y crisis convulsivas</label>
+                            </div>                                                
+                            {% else %}
+
+
+
+                            
+                            {% if form.neurop.value == 'on'  %}
+                            <div class="col-md-2 form-check">
+                                <input class="form-check-input" type="checkbox" id="i_card" value="" checked>
+                                <label class="form-check-label" for="flexCheckDefault">Neuropatias</label>
+                            </div>
+                            {% else %}                       
+                            <div class="col-md-2 form-check">
+                                <div>{% render_field form.neurop class="form-check-input" type="checkbox" %}</div>
+                                <label class="form-check-label" for="flexCheckDefault">Neuropatias</label>
+                            </div>                                            
+                            {% endif %}           
+
+                            {% if form.tra_org.value == 'on'  %}
+                            <div class="col-md-2 form-check">
+                                <input class="form-check-input" type="checkbox" id="tran_rit" value="" checked>
+                                <label class="form-check-label" for="flexCheckDefault">Trasplantes de organos</label>
+                            </div>
+                            {% else %} 
+                            <div class="col-md-2 form-check">
+                                <div>{% render_field form.tra_org class="form-check-input" type="checkbox" %}</div>
+                                <label class="form-check-label" for="flexCheckDefault">Trasplantes de organos</label>
+                            </div>                                
+                            {% endif %}
+                            {% if form.o_enfer.value == 'on'  %}
+                            <div class="col-md-2 form-check">
+                                <input class="form-check-input" type="checkbox" id="prot_val" value="" checked>
+                                <label class="form-check-label" for="flexCheckDefault">Otras Enfermedades</label>
+                            </div>
+                            {% else %}
+                            <div class="col-md-2 form-check">
+                                <div>{% render_field form.o_enfer class="form-check-input" type="checkbox" %}</div>
+                                <label class="form-check-label" for="flexCheckDefault">Otras Enfermedades</label>
+                            </div>              
+                            {% endif %}                                             
+                            {% if form.sis_n_vas.value == 'on'  %}
+                            <div class="col-md-2 form-check">
+                                <input class="form-check-input" type="checkbox" id="marc_des" value="" checked>
+                                <label class="form-check-label" for="flexCheckDefault">Sistema Nervioso Vascular</label>
+                            </div>
+                            {% else %}                                                         
+                            <div class="col-md-2 form-check">
+                                <div>{% render_field form.sis_n_vas class="form-check-input" type="checkbox" %}</div>
+                                <label class="form-check-label" for="flexCheckDefault">Sistema Nervioso Vascular</label>
+                            </div>      
+                            {% endif %} 
+
+                            {% if form.e_enc_conv.value == 'on'  %}
+                            <div class="col-md-2 form-check">
+                                <input class="form-check-input" type="checkbox" id="marc_des" value="" checked>
+                                <label class="form-check-label" for="flexCheckDefault">Enf. encefalicas, medulares y del Sis.Nervioso periferico</label>
+                            </div>
+                            {% else %}                                                         
+                            <div class="col-md-2 form-check">
+                                <div>{% render_field form.e_enc_conv class="form-check-input" type="checkbox" %}</div>
+                                <label class="form-check-label" for="flexCheckDefault">Enf. encefalicas, medulares y del Sis.Nervioso periferico</label>
+                            </div>        
+                            {% endif %}                                             
+                            {% if form.e_cris_conv.value == 'on'  %}
+                            <div class="col-md-2 form-check">
+                                <input class="form-check-input" type="checkbox" id="prot_val" value="" checked>
+                                <label class="form-check-label" for="flexCheckDefault">Epilepcias y crisis convulsivas</label>
+                            </div>
+                            {% else %}
+                            <div class="col-md-2 form-check">
+                                <div>{% render_field form.e_cris_conv class="form-check-input" type="checkbox" %}</div>
+                                <label class="form-check-label" for="flexCheckDefault">Epilepcias y crisis convulsivas</label>
+                            </div>                
+                            {% endif %} 
+                            {% endif %}
+
+                        </div>
+
+                        <div class="row" style="margin-top:1%">
+                            {% if view_type == 'create' %}
+                            <div class="col-md-2 form-check">
+                                <div>{% render_field form.alt_equ class="form-check-input" type="checkbox" %}</div>
+                                <label class="form-check-label" for="flexCheckDefault">Alteraciones del equilibrio</label>
+                            </div>                                                   
+                            <div class="col-md-2 form-check">
+                                <div>{% render_field form.tras_musc class="form-check-input" type="checkbox" %}</div>
+                                <label class="form-check-label" for="flexCheckDefault">Trastornos musculares</label>
+                            </div>                                                   
+
+                            <div class="col-md-2 form-check">
+                                <div>{% render_field form.ac_isq_trans class="form-check-input" type="checkbox" %}</div>
+                                <label class="form-check-label" for="flexCheckDefault">Accidente Isquemico Transitorio</label>
+                            </div>                                                   
+                            <div class="col-md-2 form-check">
+                                <div>{% render_field form.acc_isq_rec class="form-check-input" type="checkbox" %}</div>
+                                <label class="form-check-label" for="flexCheckDefault">Accidente Isquemico Recurrente</label>
+                            </div>    
+                            <div class="col-md-2 form-check">
+                                <div>{% render_field form.glucometria class="form-check-input" type="checkbox" %}</div>
+                                <label class="form-check-label" for="flexCheckDefault">Glucometria</label>
+                            </div>                                                   
+                            <div class="col-md-2 form-check">
+                                <div>{% render_field form.pre_mar class="form-check-input" type="checkbox" %}</div>
+                                <label class="form-check-label" for="flexCheckDefault">Presencia de Marihuana</label>
+                            </div>                                                
+                            {% else %}
+
+
+
+                            
+                            {% if form.alt_equ.value == 'on'  %}
+                            <div class="col-md-2 form-check">
+                                <input class="form-check-input" type="checkbox" id="i_card" value="" checked>
+                                <label class="form-check-label" for="flexCheckDefault">Alteraciones del equilibrio</label>
+                            </div>
+                            {% else %}                       
+                            <div class="col-md-2 form-check">
+                                <div>{% render_field form.alt_equ class="form-check-input" type="checkbox" %}</div>
+                                <label class="form-check-label" for="flexCheckDefault">Alteraciones del equilibrio</label>
+                            </div>                                             
+                            {% endif %}           
+                            {% if form.tras_musc.value == 'on'  %}
+                            <div class="col-md-2 form-check">
+                                <input class="form-check-input" type="checkbox" id="tran_rit" value="" checked>
+                                <label class="form-check-label" for="flexCheckDefault">Trastornos musculares</label>
+                            </div>
+                            {% else %} 
+                            <div class="col-md-2 form-check">
+                                <div>{% render_field form.tras_musc class="form-check-input" type="checkbox" %}</div>
+                                <label class="form-check-label" for="flexCheckDefault">Trastornos musculares</label>
+                            </div>                                
+                            {% endif %}
+                            {% if form.pre_mar.value == 'on'  %}
+                            <div class="col-md-2 form-check">
+                                <input class="form-check-input" type="checkbox" id="tran_rit" value="" checked>
+                                <label class="form-check-label" for="flexCheckDefault">Presencia de Marihuana</label>
+                            </div>
+                            {% else %} 
+                            <div class="col-md-2 form-check">
+                                <div>{% render_field form.tras_musc class="form-check-input" type="checkbox" %}</div>
+                                <label class="form-check-label" for="flexCheckDefault">Presencia de Marihuana</label>
+                            </div>                                
+                            {% endif %}
+                            {% if form.ac_isq_trans.value == 'on'  %}
+                            <div class="col-md-2 form-check">
+                                <input class="form-check-input" type="checkbox" id="prot_val" value="" checked>
+                                <label class="form-check-label" for="flexCheckDefault">Accidente Isquemico Transitorio</label>
+                            </div>
+                            {% else %}
+                            <div class="col-md-2 form-check">
+                                <div>{% render_field form.ac_isq_trans class="form-check-input" type="checkbox" %}</div>
+                                <label class="form-check-label" for="flexCheckDefault">Accidente Isquemico Transitorio</label>
+                            </div>             
+                            {% endif %}                                             
+                            {% if form.acc_isq_rec.value == 'on'  %}
+                            <div class="col-md-2 form-check">
+                                <input class="form-check-input" type="checkbox" id="marc_des" value="" checked>
+                                <label class="form-check-label" for="flexCheckDefault">Accidente Isquemico Recurrente</label>
+                            </div>
+                            {% else %}                                                         
+                            <div class="col-md-2 form-check">
+                                <div>{% render_field form.acc_isq_rec class="form-check-input" type="checkbox" %}</div>
+                                <label class="form-check-label" for="flexCheckDefault">Accidente Isquemico Recurrente</label>
+                            </div>       
+                            {% endif %} 
+
+                            {% if form.glucometria.value == 'on'  %}
+                            <div class="col-md-2 form-check">
+                                <input class="form-check-input" type="checkbox" id="marc_des" value="" checked>
+                                <label class="form-check-label" for="flexCheckDefault">Glucometria</label>
+                            </div>
+                            {% else %}                                                         
+                            <div class="col-md-2 form-check">
+                                <div class="col-md-2 form-check">
+                                    <div>{% render_field form.glucometria class="form-check-input" type="checkbox" %}</div>
+                                    <label class="form-check-label" for="flexCheckDefault">Glucometria</label>
+                                </div>        
+                            {% endif %}                                             
+                            {% endif %}
+
+                        </div>                                        
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div>{% render_field form.diagnostico class="form-control" placeholder=form.diagnostico.label%}</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>                    
+
+            </div>
+                <hr />
+                <div class="row" md-12>
+                    {% if view_type == 'create' %}                                                            
+                    <h4><strong>Evaluacion Visual:</strong></h4>
+                    {% else %}                                                            
+                    <h4><strong>Resultados: Examen de la vista</h4>
+                    {% endif %}                                                            
+                </div>  
+                <div class="row" style="margin-top:2%">
+                                    
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Agudeza visual Lejana OD:</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <div>{% render_field form.Ag_vis_L_OD class="form-control" placeholder=form.Ag_vis_L_OD.label%}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Agudeza visual Lejana OI:</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <div>{% render_field form.Ag_vis_L_OI class="form-control" placeholder=form.Ag_vis_L_OI.label%}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Agudeza visual Lejana Ambos Ojos:</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <div>{% render_field form.Ag_vis_L_AM_OJ class="form-control" placeholder=form.Ag_vis_L_AM_OJ.label%}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Agudeza visual Cercana OD:</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <div>{% render_field form.Ag_vis_C_OD class="form-control" placeholder=form.Ag_vis_C_OD.label%}</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row" style="margin-top: 2%;">                                    
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Agudeza visual Cercana OI:</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <div>{% render_field form.Ag_vis_C_OI class="form-control" placeholder=form.Ag_vis_C_OI.label%}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Agudeza visual Cercana Ambos Ojos:</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <div>{% render_field form.Ag_vis_C_AM_OJ class="form-control" placeholder=form.Ag_vis_C_AM_OJ.label%}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Vision Nocturna</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <div>{% render_field form.vis_noc class="form-control" placeholder=form.vis_noc.label%}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Campo Visual Vertical Izquierda:</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <div>{% render_field form.cam_vis_v_iz class="form-control" placeholder=form.cam_vis_v_iz.label%}</div>
+                        </div>
+                    </div>
+
+                </div>
+                                               
+                <div class="row" style="margin-top: 2%;">                                    
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Campo Visual Vertical Derecha:</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <div>{% render_field form.cam_vis_v_de class="form-control" placeholder=form.cam_vis_v_de.label%}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Campo Visual Horizontal Izquierda:</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <div>{% render_field form.cam_vis_h_iz class="form-control" placeholder=form.cam_vis_h_iz.label%}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Campo Visual Horizontal Derecha:</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <div>{% render_field form.cam_vis_h_de class="form-control" placeholder=form.cam_vis_h_de.label%}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Campo Visual Binocular Horizontal:</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <div>{% render_field form.cam_vis_bin_hor class="form-control" placeholder=form.cam_vis_bin_hor.label%}</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row" style="margin-top: 2%;">                                    
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Vision en Profundidad Lejana:</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <div>{% render_field form.vis_prof_lej class="form-control" placeholder=form.vis_prof_lej.label%}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Vision en Profundidad Cercana:</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <div>{% render_field form.vis_prof_cer class="form-control" placeholder=form.vis_prof_cer.label%}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Discriminacion de Colores:</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <div>{% render_field form.Disc_Col class="form-control" placeholder=form.Disc_Col.label%}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Sensibilidad al Contraste:</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <div>{% render_field form.Sens_Cont class="form-control" placeholder=form.Sens_Cont.label%}</div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row" style="margin-top: 2%;">                                    
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Recuperacion de Encandelamiento:</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <div>{% render_field form.Recup_Enc class="form-control" placeholder=form.Recup_Enc.label%}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Phorias Horizontal Lejana:</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <div>{% render_field form.Phor_Hor_Lej class="form-control" placeholder=form.Phor_Hor_Lej.label%}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Phorias Vertical Lejana:</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <div>{% render_field form.Phor_Ver_Lej class="form-control" placeholder=form.Phor_Ver_Lej.label%}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Phorias Horizontal Cercana:</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <div>{% render_field form.Phor_Hor_Cer class="form-control" placeholder=form.Phor_Hor_Cer.label%}</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row" style="margin-top: 2%;">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Phorias Vertical Cercana:</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <div>{% render_field form.Phor_Ver_Cer class="form-control" placeholder=form.Phor_Ver_Cer.label%}</div>
+                        </div>
+                    </div> 
+                                                  
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div>{% render_field form.diagPsi class="form-control" placeholder=form.diagPsi.label%}</div>
+                        </div>
+                    </div>                                        
+
+                </div>
+
+
+
+            </div>
+
+        {% if view_type == 'create' %}                                                            
+        <div class="row">
+            <div style="margin-top: 4%;" class="container">
+                <input class="btn btn-primary" type="submit" value="Guardar Examen">
+            </div>
+        </div>
+        {% endif %}
+        
+    </form>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<script type="application/javascript">
+
+
+    document.getElementById("id_nombre_orden").readOnly = true;
+    
+    
+
+    
+    type_View = document.getElementById("type_View").value;
+
+
+
+    document.getElementById("id_diagnostico").rows = 2;
+    document.getElementById("id_diagPsi").rows = 2;
+    
+    $('#id_dir_pac').hide();
+    $('#id_identif_pac').hide();
+
+    $("input[name='dir_pac']").hide();
+    $("input[name='identif_pac']").hide();
+
+
+    if (type_View == 'update') {
+        document.getElementById("id_paciente").readOnly = true;
+        document.getElementById("id_t_sangre").disabled = true;
+        document.getElementById("id_fecha").disabled = true;
+        document.getElementById("id_altura").disabled = true;
+        document.getElementById("id_peso").disabled = true;
+        document.getElementById("id_p_alterial").disabled = true;
+        document.getElementById("id_temperatura").disabled = true;
+
+        document.getElementById("id_imc").readOnly = true;
+        document.getElementById("id_f_r").readOnly = true;
+        document.getElementById("id_p_a").readOnly = true;
+        document.getElementById("id_f_c").readOnly = true;
+        document.getElementById("id_diagnostico").readOnly = true;
+
+
+    } else {
+        document.getElementById("id_i_card").required = false;
+        document.getElementById("id_t_rit").required = false;
+        document.getElementById("id_m_desf").required = false;
+        document.getElementById("id_p_val").required = false;
+        document.getElementById("id_hi_art").required = false;
+        document.getElementById("id_a_gra_va").required = false;
+        document.getElementById("id_a_per").required = false;
+        document.getElementById("id_disnea").required = false;
+        document.getElementById("id_t_sue").required = false;
+        document.getElementById("id_o_aff").required = false;
+        document.getElementById("id_diagnostico").rows = 1;
+
+        
+//Asignando el valor del doctor al modelo
+        $('#select_doct').on('change', function() {  
+            $("input[name='doctor']").val(this.value);
+        });
+        document.getElementById("id_doctor").readOnly = true;
+        document.getElementById("id_id_paciente").readOnly = true;
+    }
+
+
+
+
+</script>
+
+{% endblock %}

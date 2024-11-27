@@ -1,0 +1,50 @@
+{% extends "home/index.html" %}
+{%load static%}
+{% block header %}
+{% endblock %} 
+
+
+{% block body %}
+<section id="services" class="services">
+    <div class="container">
+
+      <div style="margin-top: 2%;" class="section-title">
+        <h2>Reportes</h2>
+        <p>Visualice la reporteria por facturación</p>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0">
+          <div class="icon-box">
+            <div class="icon"><i class="fas fa-pills"></i></div>
+            <h4><a href="{% url 'rep_fact' %}">Reporte por Vendedor</a></h4>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0">
+          <div class="icon-box">
+            <div class="icon"><i class="fas fa-pills"></i></div>
+            <h4><a href="{% url 'rep_fact_pdf' %}">Reporte de Facturas</a></h4>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0">
+          <div class="icon-box">
+            <div class="icon"><i class="fas fa-pills"></i></div>
+            <h4><a href="{% url 'rep_cierr' %}">Cierre Diario</a></h4>
+          </div>
+        </div>        
+        <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0">
+          <div class="icon-box">
+            <div class="icon"><i class="fas fa-pills"></i></div>
+            <h4><a href="{% url 'rep_fact_p' %}">Reporte de Productos</a></h4>
+          </div>
+        </div>  
+        <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0">
+          <div class="icon-box">
+            <div class="icon"><i class="fas fa-pills"></i></div>
+            <h4><a href="{% url 'exm_resultados' %}">Expedientes Clinicos de Pacientes</a></h4>
+          </div>
+        </div>        
+      </div>
+    </div>
+  </section><!-- End Services Section -->
+{% endblock %}

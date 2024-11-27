@@ -1,0 +1,69 @@
+{% extends "home/index.html" %}
+{%load static%}
+{% block header %}
+{% endblock %}
+
+
+{% block body %}
+<section id="services" class="services">
+  <div class="container">
+    <div class="container">
+      <h2 style="margin-top: 3%; margin-bottom: 2%;">Inventario de Productos</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Descripcion</th>
+            <th># de ordenes</th>
+            <th>Existencia / UND</th>
+            <th>Precio</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for object in object_list %}
+          <tr>
+            <td>{{ object.producto }}</td>
+            <td>{{ object.descripcion }}</td>            
+            <td>{{ object.orden_asociada.count }}</td>
+            <td>{{ object.cantidad_inv }}</td>
+            <td>{{ object.precio }} Lps</td>
+            <td>
+              <button type="button" class="btn btn-secondary move"><a class=""
+                  href="{% url 'up_inv_p' pk=object.id %}"><i class="far fa-edit" style="color: white;">Editar
+                    Produto</i></button>
+            </td>
+            <td>
+              <button type="button" class="btn btn-danger move"><a class=""
+                  href="{% url 'del_inv_prod' pk=object.id %}"><i class="far fa-edit" style="color: white;"> <i class="bi bi-trash"></i></i></button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="container pagination">
+        <span class="step-links">
+  
+          <!--              <a href="?page=1">&laquo; Primera Pagina</a> -->
+          <ul class="pagination">
+            {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}"><i class="bi bi-chevron-double-left"></i>Anterior</a></li>
+            {% endif %}
+            <span style="color: black;" class="page-link current">Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.</span>
+            {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente<i class="bi bi-chevron-double-right"></i></a></li>
+            {% endif %}
+  
+          </ul>
+        </span>
+      </div>
+    </div>
+    <div style="margin-top: 2%;" class="container">
+      <button type="button" class="btn btn-primary"><a style="color: white;" href="{% url 'cre_inv_prod'%}">Agregar Producto</a></button>
+    </div>
+
+  </div>
+</section><!-- End Services Section -->
+
+{% endblock %}

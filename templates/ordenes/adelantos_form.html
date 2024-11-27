@@ -1,0 +1,101 @@
+{% extends "home/index.html" %}
+{% load crispy_forms_tags %}
+{%load static%}
+{% load widget_tweaks %}
+{% block header %}
+{% endblock %}
+
+
+{% block body %}
+
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'js/form_adelantos.js' %}"></script>
+<section id="services" class="services">
+    <div class="container">
+
+        <div class="container">
+            {% if view_type == 'update' %}
+            <h2 style="margin-top: 3%;">Actualizar registro de adelantos</h2>
+            {% else %}
+            <h2 style="margin-top: 3%;">Registrar adelantos</h2>
+            {% endif %}
+            <form style="margin-top: 2%;" method="POST" enctype='multipart/form-data'>
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-3">
+                        <div id="div_cod_ord" class="form-group">
+                            <label for="id_cod_ord" class="requiredField"
+                                style="margin-bottom: 2%;"><strong>Tipo de adelanto</strong></label>
+                            <div>{% render_field form.tipo_adelanto class="form-control" placeholder=form.tipo_adelanto.label%}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div id="div_cod_ord" class="form-group">
+                            <label for="id_cod_ord" class="requiredField"
+                                style="margin-bottom: 2%;"><strong>Cantidad</strong></label>
+                            <div>{% render_field form.cantidad class="form-control" placeholder=form.cantidad.label%}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div id="div_fecha_ingreso" class="form-group"> 
+                            <label for="id_nombre_sucursal"  class="requiredField" style="margin-bottom: 2%;"><strong>Fecha Adelanto:</strong></label> 
+                            <input type="date" name="fecha_solicitud" maxlength="500" class="textinput textInput form-control" 
+                            required id="id_direccion" value="{{form.fecha_solicitud.value | date:'c'}}">
+                        </div>                                        
+                </div>
+                <div class="row" style="margin-top: 2%;">
+                    <div class="col-md-3">
+                        <div id="div_cod_ord" class="form-group">
+                            <label for="id_cod_ord" class="requiredField"
+                                style="margin-bottom: 2%;"><strong>Tipo de solicitante</strong></label>
+                            <div>{% render_field  form.tipo_solicitante class="form-control" placeholder=form.tipo_solicitante.label%}
+                            </div>
+                        </div>
+                    </div>                     
+                    <div class="col-md-3">
+                        <div id="div_solicitante" class="form-group">
+                            <label for="id_cod_ord" class="requiredField"
+                                style="margin-bottom: 2%;"><strong>Solicitante</strong></label>
+                            <div>{% render_field form.solicitante class="form-control" placeholder=form.solicitante.label%}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 div_vendedor_princ">
+                        <div id="div_vendedor" class="form-group">
+                            <label for="id_cod_ord" class="requiredField"
+                                style="margin-bottom: 2%;"><strong>Vendedor</strong></label>
+                            <div>{% render_field form.vendedor class="form-control" placeholder=form.solicitante.label%}
+                            </div>
+                        </div>
+                    </div>
+                  
+                </div>
+                <div class='row' style='margin-top:2%'>
+                    <div class="col-md-3">
+                        <div id="div_proveedor" class="form-group">
+                            <label for="id_cod_ord" class="requiredField"
+                                style="margin-bottom: 2%;"><strong>Proveedor</strong></label>
+                            <div>{% render_field form.proveedor class="form-control" placeholder=form.solicitante.label%}
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+                <div style="margin-top: 2%;" class="container">
+                    {% if view_type == 'update' %}
+                    <button class='btn btn-primary' type='submit'>Actualizar Adelanto</button>
+                    {% else %}                                
+                    <button class='btn btn-primary' type='submit'>Guardar Adelanto</button>
+                    {% endif %}
+
+                </div>
+
+  
+            </form>
+        </div>
+
+    </div>
+</section><!-- End Services Section -->
+
+{% endblock %}
+

@@ -1,0 +1,96 @@
+{% extends "home/index.html" %}
+{%load static%}
+{% block header %}
+{% endblock %}
+
+
+{% block body %}
+<section id="services" class="services">
+  <div class="container">
+
+
+    
+    <div class="container">
+      <h2 style="margin-top: 3%; margin-bottom: 2%;">Mantenimiento de facturas</h2>
+
+
+      <form>
+        {% csrf_token %}
+
+      <div class="row">
+            <div class="col-md-3">
+              <label class="requiredField" style="margin-bottom: 2%;"><strong>Nombre del Cliente:</strong></label>
+              <div>{{cli.search}}</div>
+            </div>
+            <div class="col-md-3">
+              <label class="requiredField" style="margin-bottom: 2%;"><strong>Ingrese la factura:</strong></label>
+              <div>{{fact.fact}}</div>
+            </div>
+        </div>
+
+      <div style="margin-top: 2%;" class="row">
+        <div class="col-md-3">
+          <button class='btn btn-primary btn-sm' type='submit'>Buscar</button>
+        </div>
+        </br></br>
+      </div>
+    </form>
+      
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Factura emitida</th>
+            <th>Fecha factura</th>
+            <th>Nombre cliente</th>
+            <th>Identidad</th>
+            <th>Vendedor</th>
+            <th>Total facturado</th>
+            <th>Eliminar Factura</th>                        
+          </tr>
+        </thead>
+        <tbody>
+          {% for object in object_list %}
+          <tr>
+            <td>{{ object.factura }}</td>
+            <td>{{ object.fecha_factura }}</td>
+            <td>{{ object.nombre }}</td>
+            <td>{{ object.identidad }}</td>
+            <td>{{ object.vendedor }}</td>
+            <td>{{ object.total_factura }}</td>
+            <td>
+              <button type="button" class="btn btn-danger move"><a class=""
+                  href="{% url 'del_fac' pk=object.id %}"><i class="far fa-edit" style="color: white;">Eliminar
+                    Factura</i></button>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="container pagination">
+    <span class="step-links">
+
+      <!--              <a href="?page=1">&laquo; Primera Pagina</a> -->
+      <ul class="pagination">
+        {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}"><i class="bi bi-chevron-double-left"></i>Anterior</a></li>
+        {% endif %}
+        <span style="color: black;" class="page-link current">Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.</span>
+        {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente<i class="bi bi-chevron-double-right"></i></a></li>
+        {% endif %}
+
+      </ul>
+    </span>
+  </div>
+
+
+</section><!-- End Services Section -->
+
+{% endblock %}

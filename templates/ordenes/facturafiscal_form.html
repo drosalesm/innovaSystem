@@ -1,0 +1,520 @@
+{% extends "home/index.html" %}
+{% load crispy_forms_tags %}
+{%load static%}
+{% block header %}
+{% endblock %}
+
+
+{% block body %}
+<link href="{% static '/css/style_factura.css'%}" rel="stylesheet">
+
+<!--Recursos para la libreria DATATABLE-->
+
+
+
+<link rel="stylesheet" href="{% static 'js/jquery-ui-1.12.1/jquery-ui.min.css' %}" />
+<link rel="stylesheet" href="{% static '/lib/datatables-1.10.20/css/dataTables.bootstrap4.min.css' %}" />
+<link rel="stylesheet"
+    href="{% static '/lib/datatables-1.10.20/plugins/responsive-2.2.3/css/responsive.bootstrap4.min.css' %}" />
+
+<link rel="stylesheet" href="{% static 'js/jquery-confirm-v3.3.4/jquery-confirm.min.css' %}">
+
+
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'lib/datatables-1.10.20/js/jquery.dataTables.js' %}"></script>
+<script src="{% static 'lib/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
+<script src="{% static 'js/jquery-ui-1.12.1/jquery-ui.min.js' %}"></script>
+
+<script src="{% static 'js/jquery.bootstrap-touchspin.js' %}"></script>
+<script src="{% static 'js/functions.js' %}"></script>
+<script src="{% static 'js/sweetalert2-9.10.0/sweetalert2.all.min.js' %}"></script>
+
+
+
+<script src="{% static 'js/jquery-confirm-v3.3.4/jquery-confirm.min.js' %}"></script>
+
+<!-------------------------------------------------->
+
+<section id="services" class="services">
+    <div class="container">
+
+        <div class="container">
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="container">
+                    <div class="card">
+                        <div class="card-body">
+                            <input type="hidden" name="action" value="{{action}}" id="">   
+                            
+                            <input type="hidden" name="n_u_cli" value="{{ult_cli.nombre}}" id="n_u_cli">   
+                            <input type="hidden" name="d_u_cli" value="{{ult_cli.direccion}}" id="d_u_cli">   
+                            <input type="hidden" name="id_u_tel" value="{{ult_cli.telefono}}" id="id_u_tel">   
+                            <input type="hidden" name="id_u_id" value="{{ult_cli.identidad}}" id="id_u_id">   
+                            <div id="invoice">
+                                <div class="invoice overflow-auto">
+                                    <div style="min-width: 600px">
+                                        <header>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <a href="javascript:;">
+                                                        <img src="" width="80" alt="">
+                                                    </a>
+                                                </div>
+                                                <div class="col company-details">
+                                                    <h2 class="name">
+                                                        <a>Inversiones Inova II S. DE R.L. DE C.V</a>
+                                                    </h2>
+                                                    <div>{{dir_cli}}</div>
+                                                    <div>Telefono: 98989898</div>
+                                                    <div>Email: innova@example.com</div>
+                                                    <div>CAI:{{cai}}</div>                                                    
+                                                </div>
+                                            </div>
+                                            <h1 class="color_titulo">Facturacion de ordenes</h1>
+                                            <input type="text" value="{{excede}}" hidden id="val_fact"> 
+                                        </header>
+                                        <main>
+                                            <div class="row register-form">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="id_descripcion_orden"
+                                                            class="" ><strong>Nombre del
+                                                                Cliente:</strong></label>
+                                                        {{form_cli.search}} 
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        <label for="id_descripcion_orden"
+                                                            class=""><strong>Direccion:</strong></label>
+                                                        <input type="text" id="dir" class="form-control"
+                                                            placeholder="Direccion" name="dir" value="" disabled/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div style="margin-top: 2%;" class="row register-form">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="id_descripcion_orden"
+                                                            class=""><strong>Identidad / RTN:</strong></label>
+                                                        <input type="text" id="rtn" class="form-control"
+                                                            placeholder="Identificacion" value="" name="rtn" disabled/>
+                                                    </div>
+                                                </div>
+<!--
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="id_descripcion_orden"
+                                                            class=""><strong>Fecha:</strong></label>
+                                                        <input type="text" id="fec" class="form-control" name="fecha_fact" placeholder=""
+                                                            value=""  />
+                                                    </div>
+                                                </div>
+-->
+                                                <div class="col-md-3">
+                                                    <label class="requiredField" style="margin-bottom: 2%;"><strong>Fecha</strong></label>
+                                                    <div name="fecha_fact">{{form_fecha.fecha_fact}}</div>
+                                                  </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="id_descripcion_orden"
+                                                            class=""><strong>Telefono:</strong></label>
+                                                        <input type="text" class="form-control" id="tel" name="telefono" placeholder=""
+                                                           placeholder="Telefono" value="" disabled/>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div style="margin-top: 2%;" class="row register-form">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="id_descripcion_orden"
+                                                            class=""><strong>Agregar
+                                                                Productos:</strong></label>
+                                                        {{form_ord.search_ord}}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        {{form_vend}}
+                                                    </div>
+                                                </div>
+                                            
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        {{tipo_pago}}
+                                                    </div>
+                                                </div>
+
+
+
+                                            </div>
+
+                                            <div style="margin-top: 2%;" class="row contacts">
+                                                <div class="col invoice-details ">
+                                                    <h2 class="invoice-id" name="factura">Factura #:<input type="text" disabled class="" name="factura" id="" value="{{factura}}"></h2>
+                                                </div>
+                                            </div>
+
+                                            <table id="tabla_factura">
+                                                <thead>
+                                                    <tr>
+                                                        <th><strong>Eliminar</strong></th>
+                                                        <th><strong>Descripcion</strong></th>
+                                                        <th><strong>Precio Lps</strong></th>
+                                                        <th><strong>Cantidad</strong></th>
+                                                        <th><strong>Sub Total</strong></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <td colspan="2"></td>
+                                                        <td colspan="2">Sub-Total Lps:</td>
+                                                        <td><input type="text" style="text-align:right;" readonly
+                                                                class="form-control" value="0" name="subTotal"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2"></td>
+                                                        <td colspan="2">Descuento Lps:</td>
+                                                        <td><input type="number" style="text-align:right;" 
+                                                                class="form-control" value="0" name="descuento"></td>
+                                                    </tr>                                                    
+                                                    <tr>
+                                                        <td colspan="1"></td>
+                                                        <td colspan="2">% ISV:</td>
+                                                        <td><input type="text" style="text-align:right;" readonly
+                                                                class="form-control" value="{{isv}}" name="isv"></td>
+                                                        <td><input type="text" style="text-align:right;" readonly
+                                                                class="form-control" value="0" name="isv_val"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2"></td>
+                                                        <td colspan="2">TOTAL A PAGAR Lps:</td>
+                                                        <td><input type="text" style="text-align:right;" readonly
+                                                                class="form-control" value="0" name="TotalaPagar">
+                                                        </td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                            <div style="margin-top: 2%;" class="thanks">Gracias por preferirnos!</div>
+                                            <div class="notices">
+
+                                            </div>
+                                        </main>
+
+                                    </div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 2%;" class="container">
+                    <button class='btn btn-primary' type='text'>Facturar orden</button>
+                </div>
+            </form>
+
+        </div>
+</section><!-- End Services Section -->
+
+<script type="application/javascript">
+
+
+    let inv="{{inv_fuera}}"
+    if (inv.length>3){
+            alert_action('REVISAR INVENTARIO ANTES DE FACTURAR','El siguiente producto: '+inv.replace('[','').replace(']','')+' cuenta con menos de 25 unidades en existencia');
+
+            setTimeout(function () {
+                window.location.href = "/list_inv_p"; 
+             },5000);  
+    };
+
+    let fact_act="{{factura}}";
+    let ultima_factura="{{ult_fact}}";
+    
+    if (fact_act==ultima_factura){
+        alert_action('REVISAR PARAMETROS DE FACTURACION','La factura : '+ultima_factura+' ya fue emitida');
+
+        setTimeout(function () {
+            window.location.href = "/info_fac"; 
+         },5000);  
+    }
+
+
+
+
+
+    $(function () {
+
+        val_fac=document.getElementById("val_fact").value
+
+        if (val_fac=='Si'){
+
+            message_error('El rango de facturacion sobre pasa el limite definido');
+            return false;
+        }
+
+        $('#tabla_factura').DataTable({
+            responsive: true
+        });
+
+
+
+        var tblDetFactura;
+        var detFactura = {
+            items: {
+                nombre_cliente:'',
+                direccion:'',
+                rtn:'',
+                telefono:'',
+                vendedor:'',
+                fecha_facturacion:'',
+                total_facturado:'',
+                descuento:'',
+                impuesto_cob:'',
+                factura:'',
+                tipo_pago:'',
+                ordenes: []
+            },
+            calcular_factura: function () {
+                var descuento=$('input[name="descuento"]').val()
+                var subtotal = 0.00
+                var iva = ($('input[name="isv"]').val()) / 100;
+                var iva_value = 0.00
+                var total_pagar = 0.00
+
+                $.each(this.items.ordenes, function (pos, dict) {
+                    dict.subtotal = (dict.cantidad * parseFloat(dict.precio_orden));
+                    subtotal += dict.subtotal;
+                });
+                this.items.subtotal = subtotal;
+                $('input[name="subTotal"]').val(this.items.subtotal.toFixed(2));
+
+                iva_value = subtotal * iva
+                iva_value=iva_value.toFixed(2)
+                console.log(iva_value)
+
+                $('input[name="isv_val"]').val(iva_value);
+
+                this.items.total_pagar = ((subtotal+parseFloat(iva_value))-descuento).toFixed(2) //(subtotal + iva_value)-descuento
+
+                $('input[name="TotalaPagar"]').val(this.items.total_pagar);
+
+
+            },
+            add: function (item) {
+                this.items.ordenes.push(item);
+                this.list();
+            },
+            list: function () {
+                this.calcular_factura();
+                tblDetFactura=$('#tabla_factura').DataTable({
+                    responsive: true,
+                    autoWidth: false,
+                    destroy: true,
+                    deferRender: true,
+                    data: this.items.ordenes,
+                    columns: [
+                        { "data": "id" },
+                        { "data": "label" },
+                        { "data": "precio_orden" },
+                        { "data": "cantidad" },
+                        { "data": "subtotal" }
+                    ],
+                    columnDefs: [
+                        {
+                            targets: [0],
+                            class: 'text-center',
+                            orderable: false,
+                            render: function (data, type, row) {
+                                return '<a rel="remove" class="btn btn-danger btn-xs btn-flat"><i class="fas fa-trash-alt"></i></a>';
+                            }
+                        },
+                        {
+                            targets: [-2],
+                            class: 'text-center',
+                            orderable: false,
+                            render: function (data, type, row) {
+                                return '<input type="text" name="cantidad" class="form-control form-control-sm" autocomplete="off" value="' + row.cantidad + '">';
+                            }
+                        }
+
+
+                    ],
+                    rowCallback(row) {
+
+                    $(row).find('input[name="cantidad"]').TouchSpin({
+                        min:1,
+                        max:100,
+                        step:1
+                    });
+                    }
+
+
+                });
+            }
+        }
+
+
+        //Autocomplete de clientes
+        $('input[name="search"]').autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: window.location.pathname,  //"{% url 'crear_fact' %}",
+                    type: 'POST',
+                    data: {
+                        'action': 'autocomplete',
+                        'term': request.term
+                    },
+                    dataType: 'json'
+                }).done(function (data) {
+                    response(data);
+                    //        console.log(data)
+                }).fail(function (data, jqXHR, textStatus) {
+                    console.log("La transaccion fallo debido a: " + textStatus);
+                })
+
+            },
+            delay: 200,
+            minLength: 1,
+            select: function (event, ui) {
+
+                document.getElementById("tel").value = ui.item.telefono;
+                document.getElementById("rtn").value = ui.item.identidad;
+                document.getElementById("dir").value = ui.item.direccion;
+                //document.getElementById("fec").value = new Date().toLocaleDateString();               
+            }
+
+        });
+
+
+        //Autocomplete de ordenes
+        $('input[name="search_ord"]').autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: window.location.pathname,  //"{% url 'crear_fact' %}",
+                    type: 'POST',
+                    data: {
+                        'action': 'autocomplete_ord',
+                        'term': request.term
+                    },
+                    dataType: 'json'
+                }).done(function (data) {
+                    response(data);
+                    console.log(data)
+                }).fail(function (data, jqXHR, textStatus) {
+                    console.log("La transaccion fallo debido a: " + textStatus);
+                })
+
+            },
+            delay: 200,
+            minLength: 0,
+            select: function (event, ui) {
+                event.preventDefault();
+                console.clear();
+                ui.item.cantidad = 1;
+                ui.item.subtotal = 0;
+                detFactura.add(ui.item);
+                $(this).val('');
+                console.log(ui.item)
+            }
+
+
+        });
+
+
+        //Eventos de cantidad
+        $('#tabla_factura tbody').on('change keyup', 'input[name="cantidad"]', function () {
+  //          console.clear()
+ 
+            var cant=parseInt($(this).val());
+            var tr=tblDetFactura.cell($(this).closest('td,li')).index();
+            var data=tblDetFactura.row(tr.row).node();
+            
+            detFactura.items.ordenes[tr.row].cantidad=cant;
+            detFactura.calcular_factura()
+            $('td:eq(4)',tblDetFactura.row(tr.row).node()).html('Lps '+detFactura.items.ordenes[tr.row].subtotal.toFixed(2));
+        });
+
+
+        //Eventos de descuento
+        $('#tabla_factura tfoot').on('change keyup', 'input[name="descuento"]', function () {
+//            console.clear()
+             var cant=parseInt($(this).val());
+             detFactura.calcular_factura()
+             console.log(cant)
+        });
+
+
+
+        //Evento para eliminar
+        $('#tabla_factura tbody').on('click', 'a[rel="remove"]', function () {
+            var tr=tblDetFactura.cell($(this).closest('td,li')).index();
+            detFactura.items.ordenes.splice(tr.row,1);
+            detFactura.list();
+        });
+
+
+        $('form').on('submit', function (e) {e.preventDefault();
+
+        if(detFactura.items.ordenes.length === 0){
+            message_error('Debe tener al menos una orden para poder facturar');
+            return false;
+        }
+
+
+
+
+/*        if(detFactura.items.puthoburacion.length===0)
+        {
+            message_error('Debe registrar el cliente para facturar correctamente');
+            return false;
+        }
+*/
+          detFactura.items.fecha_facturacion = $('input[name="fecha_fact"]').val();
+          detFactura.items.nombre_cliente = $('input[name="search"]').val();
+          detFactura.items.direccion = $('input[name="dir"]').val();
+          detFactura.items.telefono = $('input[name="telefono"]').val();
+          detFactura.items.rtn = $('input[name="rtn"]').val();
+          detFactura.items.factura =$('input[name="factura"]').val();
+          detFactura.items.subtotal = $('input[name="subTotal"]').val();
+          detFactura.items.descuento = $('input[name="descuento"]').val();
+          detFactura.items.impuesto_cob = $('input[name="isv_val"]').val();
+          detFactura.items.total_facturado = $('input[name="TotalaPagar"]').val();
+          detFactura.items.vendedor= $('select[name="vendedor"]').val();
+          detFactura.items.tipo_pago= $('select[name="tipo_pago"]').val();
+
+
+          
+          console.log(detFactura.items.tipo_pago)
+
+
+        var parameters = new FormData();
+        parameters.append('action', $('input[name="action"]').val());
+        parameters.append('hedFactura', JSON.stringify(detFactura.items));
+        submit_with_ajax(window.location.pathname, 'Notificación', '¿Desea generar la orden en curso?', parameters, function () {
+        location.href = '/rep_fact_pdf';
+        });
+    });
+
+
+    });
+
+    
+    document.getElementById('id_search').value=document.getElementById("n_u_cli").value;
+    document.getElementById('dir').value=document.getElementById("d_u_cli").value;
+    document.getElementById('tel').value=document.getElementById("id_u_tel").value;
+    document.getElementById('rtn').value=document.getElementById("id_u_id").value;
+    document.getElementById("fec").value = new Date().toLocaleDateString();               
+
+
+
+</script>
+
+{% endblock %}

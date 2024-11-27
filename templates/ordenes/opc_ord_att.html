@@ -1,0 +1,27 @@
+{% extends "home/index.html" %}
+{%load static%}
+{% block header %}
+{% endblock %} 
+
+
+{% block body %}
+<section id="services" class="services">
+    <div class="container">
+
+      <div style="margin-top: 2%;" class="section-title">
+        <h2>Ordenes Facturadas</h2>
+        <p>Visualice la informacion correspondiente a ordenes emitidas.</p>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+          <div class="icon-box">
+            <div class="icon"><i class="fas fa-heartbeat"></i></div>
+            <h4><a href="{% url 'att_ord_all' %}">Ordenes por atender</a></h4>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section><!-- End Services Section -->
+{% endblock %}

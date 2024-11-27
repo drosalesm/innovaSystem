@@ -1,0 +1,171 @@
+{% extends "home/index.html" %}
+{%load static%}
+{% block header %}
+{% endblock %}
+{% load humanize %}
+
+
+{% block body %}
+
+<link rel="stylesheet" href="{% static 'js/jquery-ui-1.12.1/jquery-ui.min.css' %}" />
+<link rel="stylesheet" href="{% static '/lib/datatables-1.10.20/css/dataTables.bootstrap4.min.css' %}" />
+<link rel="stylesheet"
+    href="{% static '/lib/datatables-1.10.20/plugins/responsive-2.2.3/css/responsive.bootstrap4.min.css' %}" />
+
+<link rel="stylesheet" href="{% static 'js/jquery-confirm-v3.3.4/jquery-confirm.min.css' %}">
+
+
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'lib/datatables-1.10.20/js/jquery.dataTables.js' %}"></script>
+<script src="{% static 'lib/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
+<script src="{% static 'js/jquery-ui-1.12.1/jquery-ui.min.js' %}"></script>
+
+<script src="{% static 'js/jquery.bootstrap-touchspin.js' %}"></script>
+<script src="{% static 'js/functions.js' %}"></script>
+<script src="{% static 'js/sweetalert2-9.10.0/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'js/jquery-confirm-v3.3.4/jquery-confirm.min.js' %}"></script>
+
+
+<section id="services" class="services">
+  <div class="container">
+
+
+    <form style="margin-top: 2%;" method="post">
+        {% csrf_token %}
+
+        <div class="row">
+          <div class="row">
+            <div class="col-md-3">
+              <label class="requiredField" style="margin-bottom: 2%;"><strong>Fecha Inicio</strong></label>
+              <div>{{form.fecha}}</div>
+            </div>
+    
+            <div class="col-md-3">
+              <label class="requiredField" style="margin-bottom: 2%;"><strong>Fecha Fin</strong></label>
+              <div>{{form.fecha_fin}}</div>
+            </div>
+            <div class="col-md-3">
+              <label class="requiredField" style="margin-bottom: 2%;"><strong>Nombre del cliente</strong></label>
+              <div>{{form_cli.search}}</div>
+            </div>
+          </div>    
+          </div>
+      </div>
+
+        <div style="margin-top: 2%;" class="row">
+            <div class="col-md-3">
+                <button class='btn btn-primary btn-sm' type='submit'>Generar Reporte</button>
+            </div>
+        </div>
+
+    </form>
+    <div class="container">
+      <h2 style="margin-top: 3%; margin-bottom: 3%; text-align: center"><b>Reporte de facturas emitidas</b></h2>
+      <h5>Total facturado del <b>{{fecha_ini}}</b> al <b>{{fecha_fin}}</b>: 
+        {% if not suma_fact %} Lps 0  {% else %} Lps {{suma_fact|floatformat:2|intcomma}} {% endif %}</h5>
+      <table id='tblToExcl' class="table">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Nombre</th>
+            <th>Factura</th>
+            <th>Vendedor</th>
+            <th>Total</th>
+            <th>Generar Recibo</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for data in reporte.all %}
+          <tr>
+            <td>{{ data.fecha_factura}}</td>
+            <td>{{data.nombre}}</td>
+            <td>{{ data.factura }}</td>
+            <td>{{ data.vendedor }}</td>
+            <td>{{ data.total_factura|floatformat:2|intcomma }} Lps</td>        
+            <td>
+                <button type="button" class="btn btn-secondary move"><a class=""
+                    href="{% url 'recibo' pk=data.id %}" target="_blank"><i class="far fa-edit" style="color: white;"> <i class="bi bi-printer"></i></button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="container pagination">
+      <span class="step-links">
+
+        <!--              <a href="?page=1">&laquo; Primera Pagina</a> -->
+        <ul class="pagination">
+          {% if page_obj.has_previous %}
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}"><i class="bi bi-chevron-double-left"></i>Anterior</a></li>
+          {% endif %}
+          <span style="color: black;" class="page-link current">Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.</span>
+          {% if page_obj.has_next %}
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente<i class="bi bi-chevron-double-right"></i></a></li>
+          {% endif %}
+
+        </ul>
+
+      </span>
+    </div>
+    <button class='btn btn-primary btn-sm' onclick="htmlTableToExcel('xlsx')">Exportar Reporte</button>
+  </div>
+  
+</section><!-- End Services Section -->
+
+<script type="application/javascript">
+  
+
+
+  function htmlTableToExcel(type){
+    var data = document.getElementById('tblToExcl');
+    var excelFile = XLSX.utils.table_to_book(data, {sheet: "sheet1"});
+    XLSX.write(excelFile, { bookType: type, bookSST: true, type: 'base64' });
+    XLSX.writeFile(excelFile, 'ReporteFacturas.'+ type);
+   }
+  
+  
+
+    $(function () {
+      let csrftoken = '{{ csrf_token }}'
+
+        //Autocomplete de clientes
+        $('input[name="search"]').autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "{% url 'obt_cli' %}",
+                    type: 'POST',
+                    headers:{'X-CSRFToken':csrftoken},
+                    data: {
+                        'action': 'autocomplete',
+                        'term': request.term
+                    },
+                    dataType: 'json'
+                }).done(function (data) {
+                    response(data);
+                    //        console.log(data)
+                }).fail(function (data, jqXHR, textStatus) {
+                    console.log("La transaccion fallo debido a: " + textStatus);
+                })
+
+            },
+            delay: 200,
+            minLength: 1,
+            select: function (event, ui) {
+
+              document.getElementById("id_search").value = ui.item.nombre;
+               
+            }
+
+        });
+
+
+        });
+    
+
+
+  </script>
+
+{% endblock %}

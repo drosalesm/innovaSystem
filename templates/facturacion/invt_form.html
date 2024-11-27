@@ -1,0 +1,92 @@
+{% extends "home/index.html" %}
+{% load crispy_forms_tags %}
+{%load static%}
+{% block header %}
+{% endblock %} 
+{% load widget_tweaks %}
+
+{% block body %}
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<section id="services" class="services">
+    <div class="container">
+
+<div class="container">
+    {% if view_type == 'update' %}
+    <h2 style="margin-top: 3%;">Editar Producto</h2>
+    {% else %}
+    <h2 style="margin-top: 3%;">Registrar Producto</h2>
+    {% endif %}
+    <form method="POST" enctype='multipart/form-data'>
+        {% csrf_token %}
+        <div class="row" style="margin-top: 2%;">
+        
+
+
+
+ <div class="row" style="margin-top: 2%;">
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label><strong>Producto:</strong></label>
+            <div>{% render_field form.producto class="form-control" placeholder=form.producto.label%}</div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="form-group">
+            <label><strong>Descripcion:</strong></label>
+            <div>{% render_field form.descripcion class="form-control" placeholder=form.descripcion.label%}</div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row" style="margin-top: 2%;">
+    <div class="col-md-3">
+        <div id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField""><strong>Cantidad Inventario</strong></label>
+            <div>{% render_field form.cantidad_inv class="form-control" placeholder=form.cantidad_inv.label%}</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"><strong>Precio Unitario</strong></label>
+            <div>{% render_field form.precio class="form-control" placeholder=form.precio.label%}</div>
+        </div>
+    </div>   
+    <div class="col-md-3">
+        <div id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"><strong>Orden Asociada</strong></label>
+            <div>{% render_field form.orden_asociada class="form-control" placeholder=form.orden_asociada.label%}</div>
+        </div>
+    </div>       
+
+</div>
+
+
+        <div style="margin-top: 2%;" class="container">
+            {% if view_type == 'update' %}
+            <button class='btn btn-primary' type='submit'>Actualizar Producto</button>
+            {% else %}
+            <button class='btn btn-primary' type='submit'>Registrar Producto</button>
+            {% endif %}
+        </div>
+        
+
+    </form>
+
+</div>
+</section><!-- End Services Section -->
+
+
+<script type="application/javascript">
+
+  
+    $('#select_suc').on('change', function() {  
+                $("input[name='sucursal']").val(this.value);
+            });
+    document.getElementById("id_sucursal").readOnly = true;
+    
+    
+    </script>
+
+{% endblock %}

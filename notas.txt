@@ -1,0 +1,19 @@
+
+
+super usuario
+*************
+
+user: admin
+pass: 123
+
+
+usuario personal
+---------------
+
+
+usuario personal
+---------------
+user: jflores	
+pass: 123
+
+

@@ -1,0 +1,137 @@
+{% extends "home/index.html" %}
+{%load static%}
+
+{% block nav%}
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+
+{% block body %}
+
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<link href="{% static '/css/style_gen.css'%}" rel="stylesheet">
+<input hidden type="text" name="" id="type_View" value="{{view_type}}">
+
+<div class="container">
+    <div class=" text-center mt-8 ">
+        <h1 style="margin-top: 3%; margin-bottom: 1%;"><strong>Formulario para evaluacion </strong>
+        </h1>
+    </div>
+    <div class="col-lg-12 mx-auto">
+        <div class="card mt-4 mx-auto p-4 bg-light">
+            <div class="card-body bg-light">
+                <div class="container">
+                    <form id="contact-form" role="form">
+                        <div class="controls">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="form_name">Paciente</label>
+                                        <input id="form_name" type="text" name="name" class="form-control"
+                                            value="{{paciente}}" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="form_lastname">Orden</label>
+                                        <input id="form_name" type="text" name="name" class="form-control"
+                                            value="{{name_orden}}" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="form_email">Codigo de orden</label>
+                                        <input id="form_email" type="text" name="email" class="form-control"
+                                            value="{{cod_orden}}" disabled>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="row" style="margin-top: 2%;">
+
+                                <div class="col-md-3">
+                                    <div style="margin-top: 1%;" id="div_nombre_sucursal" class="form-group"> 
+                                        <label for="id_nombre_sucursal" class="requiredField" style="margin-bottom: 2%;"><strong>Fecha:</strong></label> 
+                                        <input type="date" name="fecha_ingreso" maxlength="500" class="textinput textInput form-control" 
+                                        required id="fechaHoy" value="{{form.fecha.value | date:'c'}}">
+                                    </div>  
+                                </div>
+                            </div>
+
+
+                            <div class="row " style="margin-top: 4%;">
+                                <h4 style="text-align: center;"><strong>ITEMS A EVALUAR</strong></h4>
+                                <hr />
+                            </div>
+                            {% for object in psi %}
+                            <div class="row" style="margin-top: 2%;">
+                                <div class="col-md-9">
+                                    <div class="form-group">
+                                        <h5 id="preg">{{ object.pregunta }}</h5>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <form action="">
+                                        <div class="form-check form-check-inline">
+                                            <input id="si_id" class="form-check-input" type="radio"
+                                                name="inlineRadioOptions" id="inlineRadio2"
+                                                value="<h5>{{ object.pregunta }}</h5>">
+                                            <label class="form-check-label" for="inlineRadio2">Si</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input id="no_id" class="form-check-input" type="radio"
+                                                name="inlineRadioOptions" id="inlineRadio1"
+                                                value="<h5>{{ object.pregunta }}</h5>">
+                                            <label class="form-check-label" for="inlineRadio1">No</label>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            <div style="margin-top: 4%;" class="container">
+                                <button type="button" class="btn btn-primary"><a style="color: white;" href="">Guardar
+                                        Examen</a></button>
+                            </div>                            
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="application/javascript">
+
+    var conteo = 0
+    const preg = []
+    var valuee
+    $(document).on('change', '#si_id', function () {
+
+
+        if (this.checked) {
+            conteo = conteo + 1.18
+            //  preg[preg.length] = "Lemon";
+        }
+        console.log(document.getElementById("si_id").value)
+        console.log(conteo)
+
+    });
+
+
+
+
+    $(function () {
+        var m = new Date();
+        var dateString = m.getUTCFullYear() + "/" + (m.getUTCMonth() + 1) + "/" + m.getUTCDate();
+        document.getElementById("fechaHoy").value = dateString;
+    });
+
+
+
+</script>
+
+
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "home/index.html" %}
+{%load static%}
+{% block header %}
+{% endblock %} 
+
+
+{% block body %}
+<section id="services" class="services">
+    <div class="container">
+
+      <div style="margin-top: 2%;" class="section-title">
+        <h2>Resultados de examenes</h2>
+        <p>Visualice la informacion de los examenes realizados.</p>
+      </div>
+      {% if request.user.rol == '0' %}
+      <div class="row">
+        <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+          <div class="icon-box">
+            <div class="icon"><i class="fas fa-heartbeat"></i></div>
+            <h4><a href="{% url 'ex_med_list' %}">Evaluación Medica</a></h4>
+          </div>
+        </div>
+        {% elif request.user.rol == '1' %}                    
+        <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0">
+          <div class="icon-box">
+            <div class="icon"><i class="fas fa-pills"></i></div>
+            <h4><a href="{% url 'ex_psi_list' %}">Examen Psicologico</a></h4>
+          </div>
+        </div>
+        {% else %}
+        <div class="row">
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+            <div class="icon-box">
+              <div class="icon"><i class="fas fa-heartbeat"></i></div>
+              <h4><a href="{% url 'ex_med_list' %}">Evaluación Medica</a></h4>
+            </div>
+          </div>        
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0">
+            <div class="icon-box">
+              <div class="icon"><i class="fas fa-pills"></i></div>
+              <h4><a href="{% url 'ex_psi_list' %}">Examen Psicologico</a></h4>
+            </div>
+          </div>        
+
+        {% endif %}
+    </div>
+  </section><!-- End Services Section -->
+{% endblock %}

@@ -1,0 +1,885 @@
+{% extends "home/index.html" %}
+{%load static%}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% block nav%}
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block body %}
+
+
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<link href="{% static '/css/style_gen.css'%}" rel="stylesheet">
+<input hidden type="text" name="" id="type_View" value="{{view_type}}">
+
+<div class="card card-body bg-light ver col-lg-12 mx-auto">
+
+    <div class="row" style="margin-top: 2%;">
+        <img class='rounded mx-auto d-block' style="width: 150px;" src="{% static '/img/logoLetras.png'%}">
+    </div>
+
+
+    <form id="contact-form" role="form" method="POST" enctype='multipart/form-data'>
+
+        <div style="display:none">
+        <div>{% render_field form.dir_pac class="form-control hide" value=direccion placeholder=form.dir_pac.label%}</div>
+        <div>{% render_field form.identif_pac class="form-control hide" value=identificacion placeholder=form.identif_pac.label%}</div>
+        </div>
+
+        {% csrf_token %}
+        <div class="controls">    
+            <div class="row" style="margin-bottom: 2%; margin-top: 1%;">
+                <div class="col-md-12">
+                    {% if view_type == 'create' %}
+                    <h4><strong>Evaluacion Psicologica:</strong></h4>
+                    {% else %}
+                    <h4><strong>Resultados: Examen Psicologico</h4>
+                    {% endif %}
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label><strong>Paciente</strong></label>
+                        <div>{% render_field form.paciente class="form-control" value=paciente placeholder=form.cod_ord.label%}</div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label><strong>Orden</strong></label>
+                        <div>{% render_field form.nombre_orden class="form-control" value=name_orden placeholder=form.cod_ord.label%}</div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div style="margin-top: 1%;" id="div_nombre_sucursal" class="form-group"> 
+                        <label for="id_nombre_sucursal" class="requiredField"><strong>Fecha:</strong></label> 
+                        <input type="date" name="fecha" maxlength="500" class="textinput textInput form-control" 
+                        required id="id_fecha" value="{{form.fecha.value | date:'c'}}">
+                    </div>  
+                </div> 
+                {% if view_type == 'create' %}
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label><strong>Psicologo(a)</strong></label>
+                        <select id="select_doct" class="form-control">        
+                        <option text='-----'>-----</option>
+                        {% for d in psicologo.all %}
+                        <option text={{d}}>{{d}} </option>
+            
+                        {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label><strong>Atendido por:</strong></label>
+                        <div>{% render_field form.doctor class="form-control" placeholder=form.doctor.label%}</div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label><strong># Orden:</strong></label>
+                        <div>{% render_field form.id_orden class="form-control" value=id_orden placeholder=form.id_orden.label%}</div>
+                    </div>
+                </div>
+                
+                {% endif %}                
+                
+            </div>  
+
+ 
+               
+<div class="row" style="margin-top:10px">
+
+
+    <div class="col-md-2">
+        <div style="margin-top: 1%;" id="div_nombre_sucursal" class="form-group"> 
+            <label for="id_nombre_sucursal" class="requiredField"><strong>Foto:</strong></label> 
+            {% if pac.foto %}
+                <td><img style="width:200px; height:180px;" src="{{pac.foto.url }}" alt="" border=3 height=100 width=300></img></th>
+            {%else %}
+                <td><img style="width:200px; height:180px;" src="" alt="" border=3 height=100 width=300></img></th>
+            {% endif %}                    
+        </div>  
+    </div> 
+    <div class="col-md-4">
+        <div id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"><strong>Documento</strong></label>
+            <div>{% render_field form.documento class="form-control" placeholder=form.documento.label%}
+            </div>
+        </div>
+    </div> 
+
+
+</div>
+
+
+
+            <div class="row">
+                <div class=" text-center mt-8 ">
+                    <h5 style="margin-top: 3%; margin-bottom: 2%;"><strong>ITEMS DELIRIUM</strong></h5>
+                </div>
+            </div>
+            <div class="row">
+                    <div class="col-md-4">
+                        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+                            <label for="id_cod_ord" class="requiredField"
+                                style="margin-bottom: 2%;"><strong> ¿Le cuesta recordar la fecha exacta del día en el que se encuentra?</strong></label>
+                            <div>{% render_field form.items_del_one class="form-control" placeholder=form.items_del_one.label%}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+                            <label for="id_cod_ord" class="requiredField"
+                                style="margin-bottom: 2%;"><strong>¿Constantemente pierde la noción del tiempo?</strong></label>
+                            <div>{% render_field form.items_del_two class="form-control" placeholder=form.items_del_two.label%}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+                            <label for="id_cod_ord" class="requiredField"
+                                style="margin-bottom: 2%;"><strong>¿Se le dificulta mantener su nivel de atención de manera prolongada?</strong></label>
+                            <div>{% render_field form.items_del_thre class="form-control" placeholder=form.items_del_thre.label%}</div>
+                        </div>
+                    </div>
+
+            </div>
+  
+            <div style="margin-top: 2%;" class="row">
+                <div class="col-md-4">
+                    <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+                        <label for="id_cod_ord" class="requiredField"
+                            style="margin-bottom: 2%;"><strong>¿Le cuesta dar direcciones o siente dificultades para orientarse siguiendo una dirección?</strong></label>
+                        <div>{% render_field form.items_del_four class="form-control" placeholder=form.items_del_four.label%}</div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+                        <label for="id_cod_ord" class="requiredField"
+                            style="margin-bottom: 2%;"><strong>¿Se siente desorientado constantemente?</strong></label>
+                        <div>{% render_field form.items_del_five class="form-control" placeholder=form.items_del_five.label%}</div>
+                    </div>
+                </div>
+
+        </div>
+
+        <div class="row">
+            <div class=" text-center mt-8 ">
+                <h5 style="margin-top: 3%; margin-bottom: 2%;"><strong>ITEMS A EVALUAR DEMENCIA</strong></h5>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+                    <label for="id_cod_ord" class="requiredField"
+                        style="margin-bottom: 2%;"><strong>¿Se le dificulta deletrear una palabra?</strong></label>
+                    <div>{% render_field form.items_dem_one class="form-control" placeholder=form.items_dem_one.label%}</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+                    <label for="id_cod_ord" class="requiredField"
+                        style="margin-bottom: 2%;"><strong>¿Se le olvidan las fechas importantes?</strong></label>
+                    <div>{% render_field form.items_dem_two class="form-control" placeholder=form.items_dem_two.label%}</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+                    <label for="id_cod_ord" class="requiredField"
+                        style="margin-bottom: 2%;"><strong>¿Siente dificultades al quererse comunicar con los demás?</strong></label>
+                    <div>{% render_field form.items_dem_thre class="form-control" placeholder=form.items_dem_thre.label%}</div>
+                </div>
+            </div>
+
+    </div>
+
+    <div style="margin-top: 2%;" class="row">
+        <div class="col-md-4">
+            <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+                <label for="id_cod_ord" class="requiredField"
+                    style="margin-bottom: 2%;"><strong>¿Olvida constantemente donde deja las llaves?</strong></label>
+                <div>{% render_field form.items_dem_four class="form-control" placeholder=form.items_dem_four.label%}</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+                <label for="id_cod_ord" class="requiredField"
+                    style="margin-bottom: 2%;"><strong>¿Tiene que tomar nota de todo porque todo se le olvida?</strong></label>
+                <div>{% render_field form.items_dem_five class="form-control" placeholder=form.items_dem_five.label%}</div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <div class="row">
+        <div class=" text-center mt-8 ">
+            <h5 style="margin-top: 3%; margin-bottom: 2%;"><strong>ITEMS PARA EVALUAR TRANSTORNOS AMNESICOS Y TRANSTORNOS COGNITIVOS</strong></h5>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+                <label for="id_cod_ord" class="requiredField"
+                    style="margin-bottom: 2%;"><strong>¿Considera usted que se le hace difícil aprender cosas nuevas?</strong></label>
+                <div>{% render_field form.items_trans_one class="form-control" placeholder=form.items_trans_one.label%}</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+                <label for="id_cod_ord" class="requiredField"
+                    style="margin-bottom: 2%;"><strong>¿Llora usted con mucha frecuencia?</strong></label>
+                <div>{% render_field form.items_trans_two class="form-control" placeholder=form.items_trans_two.label%}</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+                <label for="id_cod_ord" class="requiredField"
+                    style="margin-bottom: 2%;"><strong>¿Se considera una persona apática?</strong></label>
+                <div>{% render_field form.items_trans_thre class="form-control" placeholder=form.items_trans_thre.label%}</div>
+            </div>
+        </div>
+
+</div>
+
+<div style="margin-top: 2%;" class="row">
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Constantemente sufre de variaciones en su estado de ánimo?</strong></label>
+            <div>{% render_field form.items_trans_four class="form-control" placeholder=form.items_trans_four.label%}</div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Se le olvidan los acontecimientos pasados?</strong></label>
+            <div>{% render_field form.items_trans_five class="form-control" placeholder=form.items_trans_five.label%}</div>
+        </div>
+    </div>
+
+</div>
+
+
+
+    <div class="row">
+        <div class=" text-center mt-8 ">
+            <h5 style="margin-top: 3%; margin-bottom: 2%;"><strong>ITEMS PARA EVALUAR TRANSTORNOS AMNESICOS Y TRANSTORNOS COGNITIVOS</strong></h5>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+                <label for="id_cod_ord" class="requiredField"
+                    style="margin-bottom: 2%;"><strong>¿Considera usted que se le hace difícil aprender cosas nuevas?</strong></label>
+                <div>{% render_field form.items_trans_one class="form-control" placeholder=form.items_trans_one.label%}</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+                <label for="id_cod_ord" class="requiredField"
+                    style="margin-bottom: 2%;"><strong>¿Llora usted con mucha frecuencia?</strong></label>
+                <div>{% render_field form.items_trans_two class="form-control" placeholder=form.items_trans_two.label%}</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+                <label for="id_cod_ord" class="requiredField"
+                    style="margin-bottom: 2%;"><strong>¿Se considera una persona apática?</strong></label>
+                <div>{% render_field form.items_trans_thre class="form-control" placeholder=form.items_trans_thre.label%}</div>
+            </div>
+        </div>
+
+</div>
+
+<div style="margin-top: 2%;" class="row">
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Constantemente sufre de variaciones en su estado de ánimo?</strong></label>
+            <div>{% render_field form.items_trans_four class="form-control" placeholder=form.items_trans_four.label%}</div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Se le olvidan los acontecimientos pasados?</strong></label>
+            <div>{% render_field form.items_trans_five class="form-control" placeholder=form.items_trans_five.label%}</div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="row">
+    <div class=" text-center mt-8 "> 
+        <h5 style="margin-top: 3%; margin-bottom: 2%;"><strong>ITEMS PARA EVALUAR TRASTORNOS MENTALES DEBIDO A ENFERMEDADES MEDICAS NO CLASIFICADAS</strong></h5>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Padece usted de alguna enfermedad?</strong></label>
+            <div>{% render_field form.items_trans_m_one class="form-control" placeholder=form.items_trans_m_one.label%}</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Su estado de animo se ha visto alterado desde su padecimiento medico?</strong></label>
+            <div>{% render_field form.items_trans_m_two class="form-control" placeholder=form.items_trans_m_two.label%}</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Se considera una persona irritable y de mal humor desde el inicio de su padecimiento medico?</strong></label>
+            <div>{% render_field form.items_trans_m_thre class="form-control" placeholder=form.items_trans_m_thre.label%}</div>
+        </div>
+    </div>
+
+</div>
+
+<div style="margin-top: 2%;" class="row">
+<div class="col-md-4">
+    <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+        <label for="id_cod_ord" class="requiredField"
+            style="margin-bottom: 2%;"><strong> ¿Ha perdido interés o placer por las cosas desde que presenta padecimientos médicos?</strong></label>
+        <div>{% render_field form.items_trans_m_four class="form-control" placeholder=form.items_trans_m_four.label%}</div>
+    </div>
+</div>
+
+<div class="col-md-4">
+    <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+        <label for="id_cod_ord" class="requiredField"
+            style="margin-bottom: 2%;"><strong> ¿Sientes frustración debido a su padecimiento medico?</strong></label>
+        <div>{% render_field form.items_trans_m_five class="form-control" placeholder=form.items_trans_m_five.label%}</div>
+    </div>
+</div>
+
+</div>
+
+
+<div class="row">
+    <div class=" text-center mt-8 "> 
+        <h5 style="margin-top: 3%; margin-bottom: 2%;"><strong>ITEMS PARA EVALUAR EZQUISOFRENIA Y OTROS TRANSTORNOS</strong></h5>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Usted siente que la gente quiere hacerle daño constantemente?</strong></label>
+            <div>{% render_field form.items_ezq_one class="form-control" placeholder=form.items_ezq_one.label%}</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Cree que la gente se río de usted?</strong></label>
+            <div>{% render_field form.items_ezq_two class="form-control" placeholder=form.items_ezq_two.label%}</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Oye voces que nadie más puede escuchar?</strong></label>
+            <div>{% render_field form.items_ezq_thre class="form-control" placeholder=form.items_ezq_thre.label%}</div>
+        </div>
+    </div>
+
+</div>
+
+<div style="margin-top: 2%;" class="row">
+<div class="col-md-4">
+    <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+        <label for="id_cod_ord" class="requiredField"
+            style="margin-bottom: 2%;"><strong>¿Sufre de movimientos corporales excesivos y sin sentido aparente?</strong></label>
+        <div>{% render_field form.items_ezq_four class="form-control" placeholder=form.items_ezq_four.label%}</div>
+    </div>
+</div>
+
+<div class="col-md-4">
+    <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+        <label for="id_cod_ord" class="requiredField"
+            style="margin-bottom: 2%;"><strong>¿Presenta dificultades con su higiene personal?</strong></label>
+        <div>{% render_field form.items_ezq_five class="form-control" placeholder=form.items_ezq_five.label%}</div>
+    </div>
+</div>
+
+</div>
+
+<div class="row">
+    <div class=" text-center mt-8 "> 
+        <h5 style="margin-top: 3%; margin-bottom: 2%;"><strong>ITEMS PARA EVALUAR TRANSTORNOS DEL ESTADO DE ANIMO</strong></h5>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Le cuesta tomas decisiones por sí solo?</strong></label>
+            <div>{% render_field form.items_transt_a_one class="form-control" placeholder=form.items_transt_a_one.label%}</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Siente que usted es una persona inútil y sin valor?</strong></label>
+            <div>{% render_field form.items_transt_a_two class="form-control" placeholder=form.items_transt_a_two.label%}</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Ha experimentado últimamente variaciones en sus patrones de sueño y alimentación?</strong></label>
+            <div>{% render_field form.items_transt_a_thre class="form-control" placeholder=form.items_transt_a_thre.label%}</div>
+        </div>
+    </div>
+
+</div>
+
+<div style="margin-top: 2%;" class="row">
+<div class="col-md-4">
+    <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+        <label for="id_cod_ord" class="requiredField"
+            style="margin-bottom: 2%;"><strong>¿Se considera una persona negativa?</strong></label>
+        <div>{% render_field form.items_transt_a_four class="form-control" placeholder=form.items_transt_a_four.label%}</div>
+    </div>
+</div>
+
+<div class="col-md-4">
+    <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+        <label for="id_cod_ord" class="requiredField"
+            style="margin-bottom: 2%;"><strong>¿Experimenta largos periodos de tristeza, los cuales se le dificulta separarlos?</strong></label>
+        <div>{% render_field form.items_transt_a_five class="form-control" placeholder=form.items_transt_a_five.label%}</div>
+    </div>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+    <div class=" text-center mt-8 "> 
+        <h5 style="margin-top: 3%; margin-bottom: 2%;"><strong>ITEMS PARA EVALUAR TRANSTORNOS DISOCIATIVOS</strong></h5>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong> ¿Ha experimentado o ha tenido episodios violentos de agresión en el pasado?</strong></label>
+            <div>{% render_field form.items_dis_one class="form-control" placeholder=form.items_dis_one.label%}</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Ha tenido la idea de acabar con su vida?</strong></label>
+            <div>{% render_field form.items_dis_two class="form-control" placeholder=form.items_dis_two.label%}</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Siente que sufre de mucho estrés laboral y en su vida diaria?</strong></label>
+            <div>{% render_field form.items_dis_thre class="form-control" placeholder=form.items_dis_thre.label%}</div>
+        </div>
+    </div>
+
+</div>
+
+<div style="margin-top: 2%;" class="row">
+<div class="col-md-4">
+    <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+        <label for="id_cod_ord" class="requiredField"
+            style="margin-bottom: 2%;"><strong>¿Ha experimentado la sensación de tener dos o mas personas que hablan o habitan en su cabeza?</strong></label>
+        <div>{% render_field form.items_dis_four class="form-control" placeholder=form.items_dis_four.label%}</div>
+    </div>
+</div>
+
+<div class="col-md-4">
+    <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+        <label for="id_cod_ord" class="requiredField"
+            style="margin-bottom: 2%;"><strong>¿Constantemente tiene la sensación de estar fuera de sí mismo?</strong></label>
+        <div>{% render_field form.items_dis_five class="form-control" placeholder=form.items_dis_five.label%}</div>
+    </div>
+</div>
+
+</div>
+
+<div class="row">
+    <div class=" text-center mt-8 "> 
+        <h5 style="margin-top: 3%; margin-bottom: 2%;"><strong>ITEMS PARA EVALUAR TRANSTORNOS DEL SUEÑO DE ORIGEN DIFERENTE AL RESPIRATORIO</strong></h5>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Presenta usted dificultades para conciliar el sueño?</strong></label>
+            <div>{% render_field form.items_trans_sue_one class="form-control" placeholder=form.items_trans_sue_one.label%}</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong> ¿Se despierta cansado con sensación permanente de no haber dormido lo suficiente?</strong></label>
+            <div>{% render_field form.items_trans_sue_two class="form-control" placeholder=form.items_trans_sue_two.label%}</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Ha sufrido alguna experiencia fuerte de vida la cual le ha desencadenado aliteraciones en su ciclo de sueño?</strong></label>
+            <div>{% render_field form.items_trans_sue_thre class="form-control" placeholder=form.items_trans_sue_thre.label%}</div>
+        </div>
+    </div>
+
+</div>
+
+<div style="margin-top: 2%;" class="row">
+<div class="col-md-4">
+    <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+        <label for="id_cod_ord" class="requiredField"
+            style="margin-bottom: 2%;"><strong>¿No puede conciliar el sueño debido a la presencia de gran cantidad de pensamientos; ideas o recuerdos que normalmente aparecen a la hora de dormir?</strong></label>
+        <div>{% render_field form.items_trans_sue_four class="form-control" placeholder=form.items_trans_sue_four.label%}</div>
+    </div>
+</div>
+
+<div class="col-md-4">
+    <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+        <label for="id_cod_ord" class="requiredField"
+            style="margin-bottom: 2%;"><strong>¿Toma medicamentos para poder tener un descanso reparador?</strong></label>
+        <div>{% render_field form.items_trans_sue_five class="form-control" placeholder=form.items_trans_sue_five.label%}</div>
+    </div>
+</div>
+
+</div>
+<div class="row">
+    <div class=" text-center mt-8 "> 
+        <h5 style="margin-top: 3%; margin-bottom: 2%;"><strong>ITEMS PARA EVALUAR TRANSTORNOS DEL CONTROL DE IMPULSOS</strong></h5>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Disfruta de la experiencia de jugar un juego?</strong></label>
+            <div>{% render_field form.items_t_imp_a_one class="form-control" placeholder=form.items_t_imp_a_one.label%}</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Usted se come las uñas?</strong></label>
+            <div>{% render_field form.items_t_imp_a_two class="form-control" placeholder=form.items_t_imp_a_two.label%}</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Miente con mucha frecuencia para salir de dificultades o problemas?</strong></label>
+            <div>{% render_field form.items_t_imp_a_thre class="form-control" placeholder=form.items_t_imp_a_thre.label%}</div>
+        </div>
+    </div>
+
+</div>
+
+<div style="margin-top: 2%;" class="row">
+<div class="col-md-4">
+    <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+        <label for="id_cod_ord" class="requiredField"
+            style="margin-bottom: 2%;"><strong>¿Experimenta periódicamente reacciones violentas ante situaciones que le molestan?</strong></label>
+        <div>{% render_field form.items_t_imp_a_four class="form-control" placeholder=form.items_t_imp_a_four.label%}</div>
+    </div>
+</div>
+
+<div class="col-md-4">
+    <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+        <label for="id_cod_ord" class="requiredField"
+            style="margin-bottom: 2%;"><strong>¿Suele hacer compras de forma compulsiva?</strong></label>
+        <div>{% render_field form.items_t_imp_a_five class="form-control" placeholder=form.items_t_imp_a_five.label%}</div>
+    </div>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+    <div class=" text-center mt-8 "> 
+        <h5 style="margin-top: 3%; margin-bottom: 2%;"><strong>ITEMS PARA EVALUAR TRANSTORNOS DE LA PERSONALIDAD</strong></h5>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Constantemente tengo que poner a prueba a la gente para saber hasta donde son de confianza?</strong></label>
+            <div>{% render_field form.items_t_pers_one class="form-control" placeholder=form.items_t_pers_one.label%}</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong> ¿Se me dificulta superar u olvidar un insulto u alguna situación molesta que alguien me haya provocado?</strong></label>
+            <div>{% render_field form.items_t_pers_two class="form-control" placeholder=form.items_t_pers_two.label%}</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Se le hace difícil hacer muchos amigos?</strong></label>
+            <div>{% render_field form.items_t_pers_thre class="form-control" placeholder=form.items_t_pers_thre.label%}</div>
+        </div>
+    </div>
+
+</div>
+
+<div style="margin-top: 2%;" class="row">
+<div class="col-md-4">
+    <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+        <label for="id_cod_ord" class="requiredField"
+            style="margin-bottom: 2%;"><strong>¿Tiene menos interés en el sexo que la mayoría de la gente?</strong></label>
+        <div>{% render_field form.items_t_pers_four class="form-control" placeholder=form.items_t_pers_four.label%}</div>
+    </div>
+</div>
+
+<div class="col-md-4">
+    <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+        <label for="id_cod_ord" class="requiredField"
+            style="margin-bottom: 2%;"><strong>¿No me importa lo que tenga que hacer para poder alcanzar una meta?</strong></label>
+        <div>{% render_field form.items_t_pers_five class="form-control" placeholder=form.items_t_pers_five.label%}</div>
+    </div>
+</div>
+
+</div>
+
+<div class="row">
+    <div class=" text-center mt-8 "> 
+        <h5 style="margin-top: 3%; margin-bottom: 2%;"><strong>ITEMS PARA EVALUAR TRANSTORNOS DEL DESAROLLO INTELECTUAL</strong></h5>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Me considero una persona torpe (es decir movimientos torpes con falta de coordinación) motora?</strong></label>
+            <div>{% render_field form.items_trans_dint_one class="form-control" placeholder=form.items_trans_dint_one.label%}</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Me considero una persona curiosa que busca constantemente el porqué de las cosas?</strong></label>
+            <div>{% render_field form.items_trans_dint_two class="form-control" placeholder=form.items_trans_dint_two.label%}</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Me gusta seguir normas y reglas porque son una buena guía a seguir?</strong></label>
+            <div>{% render_field form.items_trans_dint_thre class="form-control" placeholder=form.items_trans_dint_thre.label%}</div>
+        </div>
+    </div>
+
+</div>
+
+<div style="margin-top: 2%;" class="row">
+<div class="col-md-4">
+    <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+        <label for="id_cod_ord" class="requiredField"
+            style="margin-bottom: 2%;"><strong>¿Se me dificulta adaptarme a cosas y experiencias nuevas?</strong></label>
+        <div>{% render_field form.items_trans_dint_four class="form-control" placeholder=form.items_trans_dint_four.label%}</div>
+    </div>
+</div>
+
+<div class="col-md-4">
+    <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+        <label for="id_cod_ord" class="requiredField"
+            style="margin-bottom: 2%;"><strong>¿Experimento constantemente reacciones y decisiones infantiles ante sucesos de la vida diaria?</strong></label>
+        <div>{% render_field form.items_trans_dint_five class="form-control" placeholder=form.items_trans_dint_five.label%}</div>
+    </div>
+</div>
+
+</div>
+
+<div class="row">
+    <div class=" text-center mt-8 "> 
+        <h5 style="margin-top: 3%; margin-bottom: 2%;"><strong>ITEMS PARA EVALUAR TRANSTORNOS POR DEFICIT DE ATENCION</strong></h5>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Me cuesta establecer prioridades?</strong></label>
+            <div>{% render_field form.items_t_datt_one class="form-control" placeholder=form.items_t_datt_one.label%}</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Se me dificulta organizar mi tiempo?</strong></label>
+            <div>{% render_field form.items_t_datt_two class="form-control" placeholder=form.items_t_datt_two.label%}</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Constantemente no termino las cosas que inicio?</strong></label>
+            <div>{% render_field form.items_t_datt_thre class="form-control" placeholder=form.items_t_datt_thre.label%}</div>
+        </div>
+    </div>
+
+</div>
+
+<div style="margin-top: 2%;" class="row">
+<div class="col-md-4">
+    <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+        <label for="id_cod_ord" class="requiredField"
+            style="margin-bottom: 2%;"><strong>¿Poseo baja tolerancia a la frustración?</strong></label>
+        <div>{% render_field form.items_t_datt_four class="form-control" placeholder=form.items_t_datt_four.label%}</div>
+    </div>
+</div>
+
+<div class="col-md-4">
+    <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+        <label for="id_cod_ord" class="requiredField"
+            style="margin-bottom: 2%;"><strong>¿Disfruto la sensación de organizar y planificar las cosas?</strong></label>
+        <div>{% render_field form.items_t_datt_five class="form-control" placeholder=form.items_t_datt_five.label%}</div>
+    </div>
+</div>
+
+</div>
+
+<div class="row">
+    <div class=" text-center mt-8 "> 
+        <h5 style="margin-top: 3%; margin-bottom: 2%;"><strong>ITEMS PARA EVALUAR COMPORTAMIENTO PERTURBADOR</strong></h5>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Muevo constantemente mi pie o mano estando sentado?</strong></label>
+            <div>{% render_field form.items_com_per_one class="form-control" placeholder=form.items_com_per_one.label%}</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Cuándo era adolescente tuve muchos problemas por mi mal comportamiento en el colegio?</strong></label>
+            <div>{% render_field form.items_com_per_two class="form-control" placeholder=form.items_com_per_two.label%}</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>¿Me cuesta seguir instrucciones y comandos dados por las figuras de autoridad?</strong></label>
+            <div>{% render_field form.items_com_per_thre class="form-control" placeholder=form.items_com_per_thre.label%}</div>
+        </div>
+    </div>
+
+</div>
+
+<div style="margin-top: 2%;" class="row">
+<div class="col-md-4">
+    <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+        <label for="id_cod_ord" class="requiredField"
+            style="margin-bottom: 2%;"><strong>¿Me provoca frustración el sentirme aburrido?</strong></label>
+        <div>{% render_field form.items_com_per_four class="form-control" placeholder=form.items_com_per_four.label%}</div>
+    </div>
+</div>
+
+<div class="col-md-4">
+    <div style="margin-top: 1%;"id="div_cod_ord" class="form-group">
+        <label for="id_cod_ord" class="requiredField"
+            style="margin-bottom: 2%;"><strong>¿Suelo desesperarme al esperar mi turno en una situación determinada?</strong></label>
+        <div>{% render_field form.items_com_per_five class="form-control" placeholder=form.items_com_per_five.label%}</div>
+    </div>
+</div>
+
+</div>
+
+                {% if view_type == 'create' %}                                                            
+                <div class="row">
+                    <div style="margin-top: 4%;" class="container">
+                        <input class="btn btn-primary" type="submit" value="Guardar Examen">
+                    </div>
+                </div>
+                {% endif %}
+                
+
+
+
+
+
+
+
+        </div>
+    </form>
+
+
+</div>
+
+<script type="application/javascript">
+
+type_View = document.getElementById("type_View").value;
+
+//Asignando el valor del doctor al modelo
+        $('#select_doct').on('change', function() {  
+            $("input[name='doctor']").val(this.value);
+        });
+        document.getElementById("id_doctor").readOnly = true;
+
+        document.getElementById("id_nombre_orden").readOnly = true;    
+        document.getElementById("id_id_paciente").readOnly = true;
+
+</script>
+
+{% endblock %}

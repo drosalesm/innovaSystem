@@ -1,0 +1,59 @@
+{% extends "home/index.html" %}
+{%load static%}
+{% block header %}
+{% endblock %}
+
+
+{% block body %}
+<section id="services" class="services">
+  <div class="container">
+
+    <div class="container">
+      <h2 style="margin-top: 3%; margin-bottom: 2%;">Parametros del SAR en facturas</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Limite de emision</th>
+            <th>Numeracion</th>
+            <th>Rango Inicial</th>
+            <th>Rango Final</th>
+            <th>Numero Actual</th>
+            <th>Sucursal</th>
+            <th>% ISV</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for object in object_list %}
+          <tr>
+            <td>{{ object.fecha_lim_em }}</td>
+            <td>{{ object.numeracion }}</td>
+            <td>{{ object.rango_inicial }}</td>
+            <td>{{ object.rango_final }}</td>
+            <td>{{ object.fac_actual }}</td>
+            <td>{{ object.sucursal }}</td>
+            <td>{{ object.isv }}</td>
+            <td>
+              <button type="button" class="btn btn-secondary move"><a class=""
+                  href="{% url 'up_fac' pk=object.id %}"><i class="far fa-edit" style="color: white;">Editar
+                    Datos</i></button>
+            </td>
+            <td>
+              <button type="button" class="btn btn-danger move"><a class=""
+                  href="{% url 'del_fac_info' pk=object.id %}"><i class="far fa-edit" style="color: white;"> <i class="bi bi-trash"></i></i></button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top: 2%;" class="container">
+      <button type="button" class="btn btn-primary"><a style="color: white;" href="{% url 'cre_tal_fac'%}">Parametros de la SAR</a></button>
+    </div>
+
+  </div>
+</section><!-- End Services Section -->
+
+{% endblock %}

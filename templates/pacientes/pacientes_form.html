@@ -1,0 +1,148 @@
+{% extends "home/index.html" %}
+{% load crispy_forms_tags %}
+{%load static%}
+{% load widget_tweaks %}
+{% block header %}
+{% endblock %}
+
+
+{% block body %}
+
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+
+<section id="services" class="services">
+    <div class="container">
+
+        <div class="container">
+            {% if view_type == 'update' %}
+            <h2 style="margin-top: 3%;">Actualizar informacion del paciente</h2>
+            {% else %}
+            <h2 style="margin-top: 3%;">Ingreso de nuevos pacientes</h2>
+            {% endif %}
+            <form style="margin-top: 2%;" method="POST" enctype='multipart/form-data'>
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-3">
+                        <div id="div_cod_ord" class="form-group">
+                            <label for="id_cod_ord" class="requiredField"
+                                style="margin-bottom: 2%;"><strong>Paciente</strong></label>
+                            <div>{% render_field form.nombre class="form-control" placeholder=form.nombre.label%}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div id="div_cod_ord" class="form-group">
+                            <label for="id_cod_ord" class="requiredField"
+                                style="margin-bottom: 2%;"><strong>Identidad</strong></label>
+                            <div>{% render_field form.identidad class="form-control" placeholder=form.identidad.label%}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div id="div_cod_ord" class="form-group">
+                            <label for="id_cod_ord" class="requiredField"
+                                style="margin-bottom: 2%;"><strong>Telefono</strong></label>
+                            <div>{% render_field form.telefono class="form-control" placeholder=form.telefono.label%}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 2%;">
+                    <div class="col-md-6">
+                        <div id="div_cod_ord" class="form-group">
+                            <label for="id_cod_ord" class="requiredField"
+                                style="margin-bottom: 2%;"><strong>Dirección</strong></label>
+                            <div>{% render_field form.direccion class="form-control" placeholder=form.direccion.label%}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div id="div_cod_ord" class="form-group">
+                            <label for="id_cod_ord"
+                                style="margin-bottom: 2%;"><strong>Correo</strong></label>
+                            <div>{% render_field form.correo class="form-control" placeholder=form.correo.label%}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 2%;">
+                <div class="col-md-3">
+                    <div id="div_fecha_ingreso" class="form-group"> 
+                        <label for="id_nombre_sucursal"  class="requiredField" style="margin-bottom: 2%;"><strong>Fecha Registro:</strong></label> 
+                        <input type="date" name="fecha_registro" maxlength="500" class="textinput textInput form-control" 
+                        required id="id_direccion" value="{{form.fecha_registro.value | date:'c'}}">
+                    </div>  
+                </div>  
+                <div class="row" style="margin-top: 2%;">
+                    <div class="col-md-3">
+                        <div id="div_cod_ord" class="form-group">
+                            <label for="id_cod_ord" class="requiredField"
+                                style="margin-bottom: 2%;"><strong>Foto</strong></label>
+                            <div>{% render_field form.foto class="form-control" placeholder=form.foto.label%}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div id="div_cod_ord" class="form-group">
+                            <label for="id_cod_ord" class="requiredField"
+                                style="margin-bottom: 2%;"><strong>Firma</strong></label>
+                            <div>{% render_field form.firma class="form-control" placeholder=form.firma.label%}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div id="div_cod_ord" class="form-group">
+                            <label for="id_cod_ord" class="requiredField"
+                                style="margin-bottom: 2%;"><strong>Huella</strong></label>
+                            <div>{% render_field form.huella class="form-control" placeholder=form.huella.label%}</div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div style="margin-top: 2%;" class="container">
+                    {% if view_type == 'update' %}
+                    <button class='btn btn-primary' type='submit'>Actualizar paciente</button>
+                    {% else %}                                
+                    <button class='btn btn-primary' type='submit'>Registrar paciente</button>
+                    {% endif %}
+
+                </div>
+
+  
+            </form>
+        </div>
+
+
+        <form action="">
+            <label style="margin-top: 4%;"><strong>Abrir Perifericos</strong></label>
+        
+            <div class="row" style="margin-top: 2%;">
+                <div class="col-md-3">
+                <button class='btn btn-primary' type='button' id="cam"><i class="bi bi-webcam fa-2x"></i></button>                                                          
+                <button class='btn btn-primary' type='button' id="huell"><i class="bi bi-fingerprint fa-2x"></i></i></button>                                                          
+        
+            </div>  
+        
+        </form>
+
+
+    </div>
+</section><!-- End Services Section -->
+
+<script>
+
+document.getElementById("id_telefono").maxlength = "8";
+
+
+$( "#cam" ).click(function() {
+    location.href = '/web_cam';
+});
+
+
+$( "#huell" ).click(function() {
+    alert( "Llamando a huella y firma" );
+    location.href = '/perifericos';
+});
+
+</script>
+
+
+{% endblock %}
+

@@ -1,0 +1,3 @@
+user: jdmejia
+pass: 123david
+name: vinyldb

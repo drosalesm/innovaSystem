@@ -1,0 +1,111 @@
+{% extends "home/index.html" %}
+{%load static%}
+{% block header %}
+{% endblock %}
+
+
+{% block body %}
+<section id="services" class="services">
+  <div class="container">
+
+    <form>
+      {% csrf_token %}
+
+    <h2 style="margin-top: 3%; margin-bottom: 2%;">Examenes Medicos</h2>
+
+    <div class="row">
+      <div class="col-md-3">
+        <label class="requiredField" style="margin-bottom: 2%;"><strong>Fecha Inicio</strong></label>
+        <div>{{form.fecha}}</div>
+      </div>
+
+      <div class="col-md-3">
+        <label class="requiredField" style="margin-bottom: 2%;"><strong>Fecha Fin</strong></label>
+        <div>{{form.fecha_fin}}</div>
+      </div>
+
+<!--
+            <div class="col-md-3">
+              <label class="requiredField" style="margin-bottom: 2%;"><strong>Producto</strong></label>              
+                <div>{{prod.producto}}</div>
+              </div>
+          </div>
+-->
+<div class="col-md-3">
+  <label class="requiredField" style="margin-bottom: 2%;"><strong>Nombre del Cliente:</strong></label>
+  <div>{{cli.search}}</div>
+</div>
+
+</div>
+
+
+    <div style="margin-top: 2%;" class="row">
+      <div class="col-md-3">
+        <button class='btn btn-primary btn-sm' type='submit'>Generar Reporte</button>
+      </div>
+      </br></br>
+    </div>
+  </form>
+
+    <div class="container">
+      <h2 style="margin-top: 3%; margin-bottom: 2%;">Examenes Psicologicos</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Paciente</th>
+            <th>Orden</th>
+            <th>Codigo</th>
+            <th>Fecha</th>
+            <th>Imprimir Evaluacion</th>            
+            <th>Imprimir Certificado</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for object in object_list %}
+          <tr>
+            <td>{{ object.paciente }}</td>
+            <td>{{ object.nombre_orden }}</td>
+            <td>{{ object.cod_ord }}</td>
+            <td>{{ object.fecha }}</td>
+            <td>
+              <button type="button" class="btn btn-secondary move"><a class=""
+                  href="{% url 'ex_psi_upd' pk=object.id %}"><i class="far fa-edit" style="color: white;"> <i class="bi bi-printer"></i></button>
+            </td>
+
+            <td>
+              <button type="button" class="btn btn-secondary move"><a class=""
+                  href="{% url 'ex_psi_pdf' pk=object.id %}"><i class="far fa-edit" style="color: white;"> <i class="bi bi-printer"></i></button>
+            </td>
+
+            <td>
+              <button type="button" class="btn btn-danger move"><a class=""
+                  href="{% url 'ex_psi_borr' pk=object.id %}"><i class="far fa-edit" style="color: white;"> <i class="bi bi-trash"></i></i></button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="container pagination">
+      <span class="step-links">
+
+        <!--              <a href="?page=1">&laquo; Primera Pagina</a> -->
+        <ul class="pagination">
+          {% if page_obj.has_previous %}
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}"><i class="bi bi-chevron-double-left"></i>Anterior</a></li>
+          {% endif %}
+          <span style="color: black;" class="page-link current">Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.</span>
+          {% if page_obj.has_next %}
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente<i class="bi bi-chevron-double-right"></i></a></li>
+          {% endif %}
+
+        </ul>
+
+      </span>
+    </div>
+
+  </div>
+</section><!-- End Services Section -->
+
+{% endblock %}

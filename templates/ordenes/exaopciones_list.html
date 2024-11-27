@@ -1,0 +1,29 @@
+{% extends "home/index.html" %}
+{%load static%}
+{% block header %}
+{% endblock %} 
+
+
+{% block body %}
+<section id="services" class="services">
+    <div class="container">
+
+      <div style="margin-top: 2%;" class="section-title">
+        <h2>Configuraciones</h2>
+        <p>Ingrese, Actualice o Elimine la informacion general.</p>
+      </div>
+      
+
+<div class="row" style="margin-top: 2%;">
+  <div class="col-lg-4 col-md-4 d-flex align-items-stretch">
+    <div class="icon-box">
+      <div class="icon"><i class="bi bi-list-task"></i></div>
+      <h4><a href="{% url 'usuarios_list' %}">Usuarios</a></h4>
+      <p>Administre los ususarios</p>
+    </div>
+  </div>
+</div>
+
+    </div>
+  </section><!-- End Services Section -->
+{% endblock %}

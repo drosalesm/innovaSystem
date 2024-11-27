@@ -1,0 +1,99 @@
+{% extends "home/index.html" %}
+{%load static%}
+{% block header %}
+{% endblock %}
+
+
+{% block body %}
+<section id="services" class="services">
+  <div class="container">
+
+
+    
+    <div class="container">
+      <h2 style="margin-top: 3%; margin-bottom: 2%;">Adelantos</h2>
+      <form>
+        {% csrf_token %}
+
+      <div class="row">
+<!--        
+            <div class="col-md-3">
+              <label class="requiredField" style="margin-bottom: 2%;"><strong>Nombre del Cliente:</strong></label>
+              <div>{{cli.search}}</div>
+            </div>
+
+        </div>
+
+      <div style="margin-top: 2%;" class="row">
+        <div class="col-md-3">
+          <button class='btn btn-primary btn-sm' type='submit'>Buscar</button>
+        </div>
+        </br></br>
+      </div>
+-->      
+
+    </form>
+      
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Tipo Adelanto</th>
+            <th>Cantidad</th>
+            <th>Tipo Solicitante</th>
+            <th>Solicitante</th>
+            <th>Fecha</th>
+            <th>Modificar adelanto</th>
+            <th>Eliminar adelanto</th>                        
+          </tr>
+        </thead>
+        <tbody>
+          {% for object in object_list %}
+          <tr>
+            <td>{{ object.get_tipo_adelanto_display }}</td>
+            <td>{{ object.cantidad }}</td>
+            <td>{{ object.get_tipo_solicitante_display }}</td>
+            <td>{{ object.solicitante }}</td>
+            <td>{{ object.fecha_solicitud }}</td>
+            <td>
+                <button type="button" class="btn btn-secondary move"><a class=""
+                    href="{% url 'act_adel' pk=object.id %}"><i class="far fa-edit" style="color: white;">Actualizar</i></button>
+              </td>
+            <td>
+              <button type="button" class="btn btn-danger move"><a class=""
+                  href="{% url 'borr_adelanto' pk=object.id %}"><i class="far fa-edit" style="color: white;">Eliminar</i></button>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="container pagination">
+    <span class="step-links">
+      
+
+      <!--              <a href="?page=1">&laquo; Primera Pagina</a> -->
+      <ul class="pagination">
+        {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}"><i class="bi bi-chevron-double-left"></i>Anterior</a></li>
+        {% endif %}
+        <span style="color: black;" class="page-link current">Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.</span>
+        {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente<i class="bi bi-chevron-double-right"></i></a></li>
+        {% endif %}
+
+      </ul>
+    </span>
+  </div>
+  <div style="margin-top: 2%;" class="container">
+    <button type="button" class="btn btn-primary"><a style="color: white;" href="{% url 'crear_adelanto'%}">Crear adelanto</a></button>
+  </div>
+
+</section><!-- End Services Section -->
+
+{% endblock %}

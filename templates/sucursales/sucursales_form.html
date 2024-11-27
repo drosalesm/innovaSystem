@@ -1,0 +1,72 @@
+{% extends "home/index.html" %}
+{% load crispy_forms_tags %}
+{%load static%}
+{% load widget_tweaks %}
+{% block header %}
+{% endblock %}
+
+
+{% block body %}
+
+<section id="services" class="services">
+    <div class="container">
+
+        <div class="container">
+            {% if view_type == 'update' %}
+            <h2 style="margin-top: 3%;">Actualizar Sucursal</h2>
+            {% else %}
+            <h2 style="margin-top: 3%;">Ingresar Sucursal</h2>
+            {% endif %}
+            <form method="POST" enctype='multipart/form-data'>
+                {% csrf_token %}
+
+                <div class="row" style="margin-top: 2%;">
+                    <div class="col-md-3">
+                        <div id="div_cod_ord" class="form-group">
+                            <label for="id_cod_ord" class="requiredField""><strong>Nombre Sucursal</strong></label>
+                            <div>{% render_field form.nombre_sucursal class="form-control" placeholder=form.nombre_sucursal.label%}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div id="div_cod_ord" class="form-group">
+                            <label for="id_cod_ord" class="requiredField"><strong>Direccion</strong></label>
+                            <div>{% render_field form.direccion class="form-control" placeholder=form.direccion.label%}</div>
+                        </div>
+                    </div>    
+                </div> 
+                <div class="row" style="margin-top: 2%;">                   
+                    <div class="col-md-3">
+                        <div id="div_cod_ord" class="form-group">
+                            <label for="id_cod_ord" class="requiredField""><strong>RTN</strong></label>
+                            <div>{% render_field form.rtn class="form-control" placeholder=form.rtn.label%}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div id="div_cod_ord" class="form-group">
+                            <label for="id_cod_ord" class="requiredField"><strong>Telefono</strong></label>
+                            <div>{% render_field form.telefono class="form-control" placeholder=form.telefono.label%}</div>
+                        </div>
+                    </div>                      
+                    <div class="col-md-3">
+                        <div id="div_cod_ord" class="form-group">
+                            <label for="id_cod_ord" class="requiredField"><strong>Email</strong></label>
+                            <div>{% render_field form.correo class="form-control" placeholder=form.correo.label%}</div>
+                        </div>
+                    </div>                                          
+                </div>
+
+
+
+        </div>
+        <div style="margin-top: 2%;" class="container">
+            {% if view_type == 'update' %}
+            <button class='btn btn-primary' type='submit'>Actualizar Sucursal</button>
+            {% else %}
+            <button class='btn btn-primary' type='submit'>Ingresar Sucursal </button>
+            {% endif %}
+        </div>
+        </form>
+
+    </div>
+</section><!-- End Services Section -->
+{% endblock %}

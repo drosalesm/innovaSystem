@@ -1,0 +1,122 @@
+{% extends "home/index.html" %}
+{%load static%}
+{% block header %}
+{% endblock %}
+
+
+{% block body %}
+<section id="services" class="services">
+  <div class="container">
+
+    <form style="margin-top: 2%;" method="get">
+      {% csrf_token %}
+
+      <div class="row">
+        <div class="col-md-3">
+          <label class="requiredField" style="margin-bottom: 2%;"><strong>Fecha Inicio</strong></label>
+          <div>{{form.fecha}}</div>
+        </div>
+
+        <div class="col-md-3">
+          <label class="requiredField" style="margin-bottom: 2%;"><strong>Fecha Fin</strong></label>
+          <div>{{form.fecha_fin}}</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 2%;" class="row">
+        <div class="col-md-3">
+          <button class='btn btn-primary btn-sm' type='submit'>Filtrar registros</button>
+        </div>
+      </div>
+    </form>
+
+    <div class="container">
+
+
+      {% if fec_ini and fecha_fin %}
+      <h2 style="margin-top: 3%; margin-bottom: 2%;">Visualice el listado de sus pacientes del: {{fec_ini}} al {{fecha_fin}} </h2>
+      {% else %}
+      <h2 style="margin-top: 3%; margin-bottom: 2%;">Visualice el listado de sus pacientes</h2>
+      {% endif %}
+
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Identidad</th>
+            <th>Telefono</th>
+            <th>Fecha registro</th>
+            <th>Foto</th>
+            <th>Firma</th>
+            <th>Huella</th>            
+            <th>Editar</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for paci in object_list %}
+          <tr>
+            <td>{{ paci.nombre }}</td>
+            <td>{{ paci.identidad }}</td>
+            <td>{{ paci.telefono }}</td>
+            <td>{{ paci.fecha_registro }}</td>
+            {% if paci.foto %}
+            <td><img style="width:120px; height:100px;" src="{{ paci.foto.url }}" alt="" border=1 height=100 width=300></img></td>
+            {% endif %}
+            {% if paci.firma %}
+            <td><img style="width:120px; height:100px;" src="{{ paci.firma.url }}" alt="" border=1 height=100 width=300></img></td>
+            {% endif %}
+            {% if paci.huella %}
+            <td><img style="width:120px; height:100px;" src="{{ paci.huella.url }}" alt="" border=1 height=100 width=300></img></td>
+            {% endif %}
+
+            <td>
+              <button type="button" class="btn btn-secondary move"><a class=""
+                  href="{% url 'act_pacientes' pk=paci.id %}"><i class="far fa-edit" style="color: white;">Editar
+                    Paciente</i></button>
+            </td>
+
+            <td>
+              <button type="button" class="btn btn-danger move"><a class=""
+                  href="{% url 'borr_pacientes' pk=paci.id %}"><i class="far fa-edit" style="color: white;">Borrar
+                    Paciente</i></button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="container pagination">
+      <span class="step-links">
+
+        <!--              <a href="?page=1">&laquo; Primera Pagina</a> -->
+        <ul class="pagination">
+          {% if page_obj.has_previous %}
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}"><i class="bi bi-chevron-double-left"></i>Anterior</a></li>
+          {% endif %}
+          <span style="color: black;" class="page-link current">Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.</span>
+          {% if page_obj.has_next %}
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente<i class="bi bi-chevron-double-right"></i></a></li>
+          {% endif %}
+
+        </ul>
+
+
+
+
+
+
+      </span>
+    </div>
+
+
+    <div style="margin-top: 2%;" class="container">
+      <button type="button" class="btn btn-primary"><a style="color: white;" href="{% url 'crear_pacientes'%}">Agregar
+          Nuevo Paciente</a></button>
+    </div>
+
+  </div>
+</section><!-- End Services Section -->
+
+{% endblock %}

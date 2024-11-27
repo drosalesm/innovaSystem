@@ -1,0 +1,131 @@
+{% extends "home/index.html" %}
+{% load crispy_forms_tags %}
+{%load static%}
+{% block header %}
+{% endblock %} 
+{% load widget_tweaks %}
+
+{% block body %}
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<section id="services" class="services">
+    <div class="container">
+
+<div class="container">
+    {% if view_type == 'update' %}
+    <h2 style="margin-top: 3%;">Editar Talonario</h2>
+    {% else %}
+    <h2 style="margin-top: 3%;">Talonarios de Facturacion</h2>
+    {% endif %}
+    <form method="POST" enctype='multipart/form-data'>
+        {% csrf_token %}
+        <div class="row" style="margin-top: 2%;">
+            <div class="col-md-3">
+                <div id="div_cod_ord" class="form-group">
+                    <label for="id_cod_ord" class="requiredField"><strong>Limite de Emision</strong></label>
+                    <div>{% render_field form.fecha_lim_em class="form-control" placeholder=form.fecha_lim_em.label%}</div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div id="div_cod_ord" class="form-group">
+                    <label for="id_cod_ord" class="requiredField"><strong>Numeracion Facturación</strong></label>
+                    <div>{% render_field form.numeracion class="form-control" placeholder=form.numeracion.label%}</div>
+                </div>
+            </div>    
+            <div class="col-md-3">
+                <div id="div_cod_ord" class="form-group">
+                    <label for="id_cod_ord" class="requiredField""><strong>Rango Inicial</strong></label>
+                    <div>{% render_field form.rango_inicial class="form-control" placeholder=form.rango_inicial.label%}</div>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div id="div_cod_ord" class="form-group">
+                    <label for="id_cod_ord" class="requiredField"><strong>Rango Final</strong></label>
+                    <div>{% render_field form.rango_final class="form-control" placeholder=form.rango_final.label%}</div>
+                </div>
+            </div>    
+
+        </div> 
+
+<div class="row" style="margin-top: 2%;">
+
+        {% if view_type == 'create' %}
+        <div class="col-md-3">
+            <div class="form-group">
+                <label><strong>Seleccione la Sucursal</strong></label>
+                <select id="select_suc" class="form-control">        
+                <option text='-------'>-------</option>
+                {% for s in suc.all %}
+                <option text={{s}}>{{s}} </option>
+                {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                <label><strong>Sucursal:</strong></label>
+                <div>{% render_field form.sucursal class="form-control" placeholder=form.sucursal.label%}</div>
+            </div>
+        </div>
+        {% else %}    
+        <div class="col-md-3">
+            <div class="form-group">
+                <label><strong>Sucursal:</strong></label>
+                <div>{% render_field form.sucursal class="form-control" placeholder=form.sucursal.label%}</div>
+            </div>
+        </div>
+        {% endif %}
+
+            <div class="col-md-3">
+                <div id="div_cod_ord" class="form-group">
+                    <label for="id_cod_ord" class="requiredField""><strong>Siguiente Factura</strong></label>
+                    <div>{% render_field form.fac_actual class="form-control" placeholder=form.fac_actual.label%}</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div id="div_cod_ord" class="form-group">
+                    <label for="id_cod_ord" class="requiredField"><strong>ISV</strong></label>
+                    <div>{% render_field form.isv class="form-control" placeholder=form.isv.label%}</div>
+                </div>
+            </div>    
+            <div class="col-md-3">
+                <div id="div_cod_ord" class="form-group">
+                    <label for="id_cod_ord" class="requiredField"><strong>CAI</strong></label>
+                    <div>{% render_field form.cai class="form-control" placeholder=form.cai.label%}</div>
+                </div>
+            </div> 
+    </div>
+
+    </div> 
+
+
+      <div style="margin-top: 2%;" class="container">
+        {% if view_type == 'update' %}
+        <button class='btn btn-primary' type='submit'>Actualizar Talonario</button>
+        {% else %}
+        <button class='btn btn-primary' type='submit'>Registrar Talonario</button>
+        {% endif %}
+    </div>
+
+
+
+    </form>
+
+</div>
+</section><!-- End Services Section -->
+
+
+<script type="application/javascript">
+
+  
+    $('#select_suc').on('change', function() {  
+                $("input[name='sucursal']").val(this.value);
+            });
+    document.getElementById("id_sucursal").readOnly = true;
+    
+    
+    </script>
+
+{% endblock %}

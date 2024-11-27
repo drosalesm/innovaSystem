@@ -1,0 +1,143 @@
+{% extends "home/index.html" %}
+{% load crispy_forms_tags %}
+{%load static%}
+{% load widget_tweaks %}
+{% block header %}
+{% endblock %}
+
+
+{% block body %}
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<section id="services" class="services">
+    <div class="container">
+
+        <form style="margin-top: 2%;" method="POST" enctype='multipart/form-data'>
+            {% csrf_token %}
+<!--            {{form.as_p}} -->
+
+<div class="row" style="margin-top: 2%;">
+
+    <div class="col-md-3">
+        <div id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>Usuario</strong></label>
+            <div>{% render_field form.username class="form-control" placeholder=form.username.label%}</div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>Nombre</strong></label>
+            <div>{% render_field form.first_name class="form-control" placeholder=form.first_name.label%}</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>Nombre</strong></label>
+            <div>{% render_field form.last_name class="form-control" placeholder=form.last_name.label%}</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>Rol</strong></label>
+            <div>{% render_field form.rol class="form-control" placeholder=form.rol.label%}</div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row" style="margin-top: 2%;">
+
+
+    <div class="col-md-2">
+        <div class="form-group">
+            <label><strong>Seleccione la Sucursal</strong></label>
+            <select id="select_suc" class="form-control">        
+                <option text='-----------'>-----------</option>
+                {% for s in suc.all %}
+                <option text={{s}}>{{s}} </option>
+            {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="form-group">
+            <label><strong>Sucursal:</strong></label>
+            <div>{% render_field form.sucursal class="form-control" placeholder=form.sucursal.label%}</div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>Contraseña</strong></label>
+            <div>{% render_field form.password class="form-control" placeholder=form.password.label%}</div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>Email</strong></label>
+            <div>{% render_field form.email class="form-control" placeholder=form.email.label%}</div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div id="div_cod_ord" class="form-group">
+            <label for="id_cod_ord" class="requiredField"
+                style="margin-bottom: 2%;"><strong>Fecha Adicion</strong></label>
+            <div>{% render_field form.date_joined class="form-control" placeholder=form.date_joined.label%}</div>
+        </div>
+    </div>
+
+
+
+
+
+</div>
+
+
+<div class="row" style="margin-top: 2%;">
+    <div class="col-md-2 form-check">
+        <label for="id_is_active">Activo:</label>
+        <input type="checkbox" name="is_active" id="id_is_active" checked>
+       
+    </div>
+</div>
+
+
+
+<div style="margin-top: 2%;" class="container">
+    {% if view_type == 'update' %}
+    <button class='btn btn-primary' type='submit'>Actualizar Usuario</button>
+    {% else %}
+    <button class='btn btn-primary' type='submit'>Registrar Usuario</button>
+    {% endif %}
+</div>
+
+</form>
+    </div>
+
+</section><!-- End Services Section -->
+
+
+<script type="application/javascript">
+
+
+document.getElementById("id_date_joined").readOnly = true;
+document.getElementById("id_password").type = "password";
+
+$('#select_suc').on('change', function() {  
+            $("input[name='sucursal']").val(this.value);
+        });
+document.getElementById("id_sucursal").readOnly = true;
+
+
+</script>
+
+{% endblock %}

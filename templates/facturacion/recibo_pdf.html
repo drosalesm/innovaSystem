@@ -1,0 +1,166 @@
+{%load static%}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Recibo de Compra</title>
+</head>
+
+<body>
+<div class="cont">
+
+<div class="container">
+
+    <a href="{% url 'inicio' %}" class="logo me-auto"><img style="height: 50px; margin-left:40%;" src="{% static '/img/inova_img2.jpeg'%}" alt="" class="img-fluid"></a>
+    <table border="3" bordercolor="" align="center">     
+        <tr>
+          <th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp CEMEP</th>        
+        </tr>
+        <tr>
+            <th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspCENTRO DE EVALUACIONES MEDICAS Y PSICOLOGICAS</th>        
+          </tr>             
+          <tr>            
+            <th>{{suc.direccion|upper}}</th>        
+        </tr>                           
+          <tr>
+            <th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp************FACTURA************</th>        
+        </tr>       
+        <tr>
+            <th>INVERSIONES INOVA S DE RL DE CV</th>        
+          </tr>                        
+        <tr>
+     
+        <tr>
+            <th>TELEFONO: {{suc.telefono}} CORREO: {{suc.correo}}</th>        
+        </tr>        
+        <tr>
+            <th>RTN: {{suc.rtn}}</th>        
+        </tr>        
+            <tr>
+                <th>CAI: {{fact_parm.cai}}</th>        
+            </tr>                    
+        <tr>
+            {% for obj in fact %}
+
+            <th>FACTURA: {{obj.factura}}<br/></th>        
+
+        </tr>
+        <tr>
+            <th>FECHA: {{obj.fecha_factura}}</th>
+        </tr>   
+        <tr>
+            <th>VENDEDOR: {{obj.vendedor|upper}}</th>
+        </tr>                            
+        <tr>
+            <th>CLIENTE: {{obj.nombre|upper}}</th>
+        </tr>      
+        <tr>
+            <th>IDENTIDAD / RTN: {{obj.identidad}}</th>
+        </tr>  
+        <tr>      
+            <th>No COMPRA EXCENTA:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspNo REGISTRO SAG:</th>      
+        </tr>
+        <tr>      
+            <th>No CONSTANCIA REGISTRO EXONERADO:</th>      
+        </tr>  
+        <tr>      
+            <th>ORIGINAL: CLIENTE&nbsp&nbsp&nbsp&nbsp&nbspCOPIA: OBLIGADO TRIBUTARIO EMISOR:</th>      
+        </tr>    
+        <tr>      
+            <th>DESCRIPCION&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspCANT.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspP.U&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspTOTAL:</th>      
+        </tr>                                               
+        {% for objcts in ord %}
+        <tr>
+            <th>{{objcts.nombre|upper}}&nbsp&nbsp&nbsp{{objcts.cantidad}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp {{objcts.precio}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp  {{objcts.sub_total}}</th>
+        </tr>
+        {% endfor %}        
+
+        <tr>
+            <th>------------------------------------------------------------------------------------</th>
+        </tr> 
+        <tr>
+            <th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspIMPORTE&nbsp L. {{obj.sub_total}}</th>
+        </tr>       
+        <tr>
+            <th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspIMPORTE EXONERADO</th>
+        </tr>    
+        <tr>
+            <th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspIMPORTE EXENTO</th>
+        </tr>     
+        <tr>
+            <th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspIMPORTE ISV 15%&nbsp L. {{obj.sub_total}}</th>
+        </tr>           
+        <tr>
+            <th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspIMPORTE ISV 18%</th>
+        </tr>                             
+    </tr>               
+        <tr>
+            <th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspDESCUENTO O REBAJAS&nbsp L. {{obj.descuento}}</th>
+        </tr>               
+        <tr>
+            <th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspISV 15%&nbsp L. {{obj.impuesto}}</th>
+        </tr>   
+        <tr>
+            <th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspISV 18% </th>
+        </tr>                 
+        <tr>
+            <th><strong>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspTOTAL&nbsp L. {{obj.total_factura}}</strong></th>
+        </tr>               
+        {% if obj.tipo_pago == "1" %} 
+        <tr>
+            <th>PAGO: EFECTIVO</th>
+        </tr>     
+        {% elif  obj.tipo_pago == "2" %} 
+        <tr>
+            <th>PAGO: TARJETA VISA</th>
+        </tr> 
+        {% elif  obj.tipo_pago == "3" %} 
+        <tr>
+            <th>PAGO: TARJETA MASTERCARD</th>
+        </tr>             
+        {% endif %} 
+
+        {% endfor %}        
+        <tr>
+            <th>CAJERO CODIGO: {{us|upper}}</th>
+        </tr>               
+        <tr>
+            <th>RANGO AUTORIZADO DE FACTURA LIMITE DE EMISIÓN: {{fact_parm.fecha_lim_em}}</th>
+        </tr>     
+        <tr>
+            <th>{{ri}} al {{rf}}</th>
+        </tr>     
+            <th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspGRACIAS POR PREFERIRNOS</th>
+        </tr>        
+
+    </table>
+</div>
+
+<div class="row">
+
+</div>
+
+<table style="margin-top: 2%;" border="5" bordercolor="" align="center">
+    <tr>
+        <th colspan="3"></th> 
+    </tr>
+    <tr>
+        <td></th>
+        <td></th>                           
+    </tr>
+    <tr>
+        <td></th>
+        <td></th>
+    </tr>
+</table>
+
+
+</div>
+
+
+</body>
+
+</html>
